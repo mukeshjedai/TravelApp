@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+
+
+
+@{
+    var topics = new List<string>
+    {
+        "Free Citizenship Test",
+        "Australia and Its People",
+        "Australia’s States and Territories",
+        "The Territories",
+        "Traditions",
+        "Important Days for Australians",
+        "Australia’s Flags",
+        "Australia’s Symbols",
+        "Australia’s National Anthem",
+        "Our Democratic Beliefs",
+        "Our Freedoms",
+        "Our Equalities",
+        "Responsibilities and Privileges of Australian Citizenship",
+        "Responsibilities",
+        "Privileges",
+        "Participating in Australian society",
+        "How Do I Have My Say?",
+        "How Did We Establish Our System of Government?",
+        "How are Laws Enforced?",
+        "Head of State",
+        "Australian Leaders",
+        "How is Australia Governed?",
+        "Working of the Levels of Government",
+        "Role of Political Parties",
+        "Australian Values",
+        "Our Community"
+    };
+}
+
+@{
+    var showCard = true; // Set this variable to false to initially hide the card
+}
+
+<head>
+    <title>Toggleable Card</title>
+    <script>
+        function toggleCard() {
+            var checkbox = document.getElementById("toggleCheckbox");
+            var card = document.getElementById("card");
+
+            if (checkbox.checked) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <label>Toggle Card:</label>
+        <input type="checkbox" id="toggleCheckbox" onclick="toggleCard()" />
+    </div>
+
+    <div id="card" style="display:none">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Topics</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Topic 1</li>
+                    <li class="list-group-item">Topic 2</li>
+                    <li class="list-group-item">Topic 3</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
