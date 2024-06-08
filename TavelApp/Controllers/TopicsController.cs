@@ -10,10 +10,19 @@ namespace TravelApp.Controllers
     [ApiController]
     public class TopicsController : Controller
     {
+        
+        private readonly IWebHostEnvironment _webHostEnvironment;
         int tempbag = 0;
+
+        public TopicsController(IWebHostEnvironment webHostEnvironment)
+        {
+            _webHostEnvironment = webHostEnvironment;
+        }
 
         public IActionResult Index()
         {
+            
+            
             ViewBag.Message = tempbag;
 
             tempbag++;
@@ -29,8 +38,9 @@ namespace TravelApp.Controllers
             // Retrieve data from a data source (e.g. database, file, API)
             var data = new List<CitizenshipQuestionAnswer> { };
 
-            string path = @"C:\Users\mukes\source\repos\TavelApp\TavelApp\Data\AustralianCitizenshipQuestionAnswer.csv";
+            //string questionFilePath = _webHostEnvironment.ContentRootPath + "//Data//AustralianCitizenshipQuestionAnswer.csv";
 
+            string path =  _webHostEnvironment.ContentRootPath + "//Data//AustralianCitizenshipQuestionAnswer.csv";
             // Create a new StreamReader to read the CSV file
             using (var reader = new StreamReader(path))
             {

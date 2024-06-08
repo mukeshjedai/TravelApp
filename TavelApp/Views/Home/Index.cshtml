@@ -1,191 +1,102 @@
 ﻿@page
 
+<script type="text/javascript" src="[https://code.jquery.com/jquery-3.5.1.js](https://code.jquery.com/jquery-3.5.1.js)"></script>
+<script type="text/javascript" src="[https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js](https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js)"></script>
+<link rel="stylesheet" href="[https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css](https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css)" />
 
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
-
-
-
-
-
-<!-- Add a counter element to the HTML -->
-<p>Correct answers: <span id="counter">0</span></p>
-<p id="startQuiz" > Site visited: @ViewBag.Message</p>
+<p>Correct answers: <span id="correctCounter">0</span></p>
+<p id="startQuiz">Site visited: @ViewBag.Message</p>
 
 <div class="text-center">
-    <h1 class="display-4">Australian Citizenship  Practice Test</h1> 
+    <h1 class="display-4">Australian Citizenship Practice Test</h1>
 </div>
 
 <table id="example" class="display" style="width:100%">
     <thead>
-        <tr>
-            <th id="question">Question</th>
-
-        </tr>
+    <tr>
+        <th id="question">Question</th>
+    </tr>
     </thead>
     <tbody>
-
-        <tr></tr>
-
+    <tr></tr>
     </tbody>
-    <tfoot>
-        <tr>
-        </tr>
-    </tfoot>
 </table>
 
-<!-- Add a counter element to the HTML -->
-
-
-
-
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
+                var correctCount = 0;
 
-   // Wait for the document to be ready
-document.addEventListener("DOMContentLoaded", function () {
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    var tdQuestion = document.createElement("th");
+                    tdQuestion.textContent = data[i].question;
+                    tr.appendChild(tdQuestion);
 
-  // Create a new XMLHttpRequest object
-  var xhttp = new XMLHttpRequest();
+                    // Create hidden answer cell
+                    var tdAnswer = document.createElement("td");
+                    tdAnswer.textContent = data[i].answer;
+                    tdAnswer.style.display = "none"; // Hide the answer cell
+                    tr.appendChild(tdAnswer);
 
-  // Define the function to be executed when the readyState property changes
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      // Parse the response data as JSON
-      var data = JSON.parse(this.responseText);
+                    var options = [data[i].option1, data[i].option2, data[i].option3, data[i].option4];
 
-      console.log(data);
+                    for (var j = 0; j < options.length; j++) {
+                        var tdOption = document.createElement("td");
+                        var label = document.createElement("label");
+                        var input = document.createElement("input");
+                        input.type = "radio";
+                        input.name = "answer_" + i;
+                        input.value = options[j];
 
-      var options= [];
+                        input.addEventListener("change", function() {
+                            
+                            var row = this.closest("tr");
+                            var correctAnswer = row.querySelector("td:nth-child(2)").textContent -1; // Get answer from hidden cell
+                            var allOptions = row.querySelectorAll("input[type=radio]");
+                            //console.log(correctAnswer)
+                            var selectedIndex = -1; // Initialize to -1 (not found)
+                            for (var i = 0; i < allOptions.length; i++) {
+                                if (allOptions[i].checked) {
+                                    selectedIndex = i; // Found the selected radio button
+                                    break;
+                                }
+                            }
+                            
+                            for (var k = 0; k < allOptions.length; k++) {
+                                allOptions[k].disabled = true;
+                                //console.log(selectedAnswer)
+                                var cell = allOptions[k].closest("td");
+                                cell.style.backgroundColor = selectedIndex === correctAnswer ? "#66ff66" : "#ff6666";
+                            }
 
-      // Loop through all the data and create a table row for each record
-      for (var i = 0; i < data.length; i++) {
-        // Get the question and answer options for the current record
-        var question = data[i].question;
-                    // Add the options to the array
-                    options.push(data[i].option1);
-                    options.push(data[i].option2);
-                    options.push(data[i].option3);
-                    options.push(data[i].option4);
-                    options.push(data[i].answer);
+                            if (selectedIndex  === correctAnswer) {
+                                correctCount++;
+                                document.getElementById("correctCounter").textContent = correctCount;
+                            }
+                        });
 
-        // Create a new table row element
-        var tr = document.createElement("tr");
+                        label.textContent = options[j];
+                        label.insertBefore(input, label.firstChild);
+                        tdOption.appendChild(label);
+                        tr.appendChild(tdOption);
+                    }
 
-        // Create a new table cell element for the question
-        var tdQuestion = document.createElement("th");
-        tdQuestion.textContent = question;
-        tr.appendChild(tdQuestion);
+                    document.getElementById("example").getElementsByTagName("tbody")[0].appendChild(tr);
+                }
+            }
+        };
 
-        // Create a new table cell element for each answer option
-        for (var j = 0; j < 5; j++) {
-          var tdOption = document.createElement("td");
-          var label = document.createElement("label");
-          var input = document.createElement("input");
-          input.type = "radio";
-          input.name = "answer_" + i;
-          input.value = j + 1;
-          label.textContent = options[j];
-          label.insertBefore(input, label.firstChild);
-          tdOption.appendChild(label);
-          tr.appendChild(tdOption);
-        }
-
-        options = [];
-
-        // Add the new row to the table body
-        document.getElementById("example").getElementsByTagName("tbody")[0].appendChild(tr);
-      }
-    }
-  };
-
-  // Open a new request
-  xhttp.open("GET", "/api/Topics", true);
-
-  // Set the request header
-  xhttp.setRequestHeader("Content-type", "application/json");
-
-  // Send the request
-  xhttp.send();
-
-});
-
-
-
-    </script>
-
-
-<script>
-function enableQuiz() {
-  // Get all radio buttons in the table
-  var radioButtons = document.querySelectorAll('input[type="radio"]');
-
-  // Loop through all radio buttons and add a click event listener
-  for (var i = 0; i < radioButtons.length; i++) {
-    radioButtons[i].addEventListener("click", function () {
-      // Get the position of the selected radio button in the row
-      var position = 0;
-      var radioButton = this;
-      while (radioButton !== null) {
-        position++;
-        radioButton = radioButton.previousElementSibling;
-      }
-
-      // Get the current row and display its values in an alert
-      var currentRow = this.closest("tr");
-      var cells = currentRow.querySelectorAll("td");
-      var values = [];
-      for (var i = 0; i < cells.length; i++) {
-        values.push(cells[i].textContent.trim());
-      }
-      alert("Selected position: " + position + "\nValues: " + values.join(", "));
+        xhttp.open("GET", "/api/Topics", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
     });
-  }
-}
-
-
 </script>
 
 <script>
-$(document).ready(function() {
-    // Initialize counter variable
-    var correctCount = 0;
-    
-    // Add event listener to option buttons
-    $('input[type=radio][name=answer]').change(function() {
-        // Get the selected row ID and answer value
-        var selectedRowId = $(this).closest('tr').attr('id');
-        var selectedValue = $(this).val();
-        
-        // Check if answer is correct
-        var correctValue = 1; // Replace with the correct answer value
-        var isCorrect = (selectedValue == correctValue);
-        
-        // Update row and counter based on correctness
-        if (isCorrect) {
-            // Change the background color of the selected row to green
-            $('#' + selectedRowId).css('background-color', 'green');
-            // Increment the correct count
-            correctCount++;
-        } else {
-            // Change the background color of the selected row to red
-            $('#' + selectedRowId).css('background-color', 'red');
-            // Disable all other rows
-            $('tr[id!=\'' + selectedRowId + '\'] input[type=radio][name=answer]').prop('disabled', true);
-        }
-        
-        // Update the counter element
-        $('#counter').text(correctCount);
-    });
-});
-</script>
-
-
-<script>
-   
-
     $('#example').DataTable({
         "language": {
             "paginate": {
@@ -196,55 +107,27 @@ $(document).ready(function() {
         paging: true,
         ordering: false,
         info: false,
-    searching: false,
-    lengthChange: false
+        searching: false,
+        lengthChange: false,
+        "columnDefs": [
+            { "targets": [1], "visible": false } // Hide the second column (answer)
+        ]
     });
 </script>
 
-<script>
-$(document).ready(function() {
-    // Add event listener to option buttons
-    $('input[type=radio][name=answer]').change(function() {
-        // Get the selected row ID
-        var selectedRowId = $(this).closest('tr').attr('id');
-        
-        // Change the background color of the selected row to green
-        $('#' + selectedRowId).css('background-color', 'green');
-        
-        // Disable the other rows
-        $('tr[id!=\'' + selectedRowId + '\'] input[type=radio][name=answer]').prop('disabled', true);
-    });
-});
-</script>
-
-
-<!-- Add CSS styling for the quiz table -->
 <style>
-    /* Style the table headers */
     th {
         background-color: #00638f;
         color: #fff;
         padding: 10px;
     }
 
-    /* Style the table rows */
     tr {
         background-color: #f2f2f2;
-        color: ##00638f;
+        color: #00638f;
         padding: 10px;
     }
 
-        /* Style the correct answer */
-        tr.correct td:first-child {
-            background-color: #66ff66;
-        }
-
-        /* Style the incorrect answer */
-        tr.incorrect td:first-child {
-            background-color: #ff6666;
-        }
-
-    /* Style the option buttons */
     input[type=radio] {
         margin-right: 10px;
     }

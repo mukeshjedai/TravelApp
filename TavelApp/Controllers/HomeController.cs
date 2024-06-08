@@ -30,7 +30,7 @@ namespace TavelApp.Controllers
             ViewData["Title"] = "Australian Citizenship Practice";
 
             // Get the absolute file path to the CSV file
-            string questionFilePath = _webHostEnvironment.ContentRootPath + "\\Data\\AustralianCitizenshipQuestionAnswer.csv";
+            string questionFilePath = _webHostEnvironment.ContentRootPath + "//Data//AustralianCitizenshipQuestionAnswer.csv";
 
             // Read the CSV file data
             var reader = new StreamReader(questionFilePath);
