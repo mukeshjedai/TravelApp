@@ -29,15 +29,7 @@ namespace TavelApp.Controllers
             tempbag = tempbag + 1;
             ViewData["Title"] = "Australian Citizenship Practice";
 
-            // Get the absolute file path to the CSV file
-            string questionFilePath = _webHostEnvironment.ContentRootPath + "//Data//AustralianCitizenshipQuestionAnswer.csv";
-
-            // Read the CSV file data
-            var reader = new StreamReader(questionFilePath);
-            var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
-
-            // Parse the data into a list of QuestionData objects
-            var questionDataList = csv.GetRecords<QuestionData>().ToList();
+            
 
             // Set the Questions property of the IndexModel instance
 

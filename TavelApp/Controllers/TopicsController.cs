@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net;
 
 namespace TravelApp.Controllers
 {
@@ -11,48 +12,40 @@ namespace TravelApp.Controllers
     public class TopicsController : Controller
     {
         
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        int tempbag = 0;
+        private readonly ILogger<TopicsController> _logger; 
 
-        public TopicsController(IWebHostEnvironment webHostEnvironment)
+        public TopicsController(ILogger<TopicsController> logger)
         {
-            _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            
-            
-            ViewBag.Message = tempbag;
-
-            tempbag++;
+            //ViewBag.Message = tempbag++;
             return View();
         }
-    
 
-   
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<CitizenshipQuestionAnswer>> Get()
         {
-           
-            // Retrieve data from a data source (e.g. database, file, API)
-            var data = new List<CitizenshipQuestionAnswer> { };
-
-            //string questionFilePath = _webHostEnvironment.ContentRootPath + "//Data//AustralianCitizenshipQuestionAnswer.csv";
-
-            string path =  _webHostEnvironment.ContentRootPath + "//Data//AustralianCitizenshipQuestionAnswer.csv";
-            // Create a new StreamReader to read the CSV file
-            using (var reader = new StreamReader(path))
+            try
             {
-                // Create a new CsvReader to parse the CSV file
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                using (WebClient client = new WebClient())
                 {
-                    // Read the CSV data into a list of CitizenshipQuestionAnswer objects
-                     data = csv.GetRecords<CitizenshipQuestionAnswer>().ToList();
-
-                    // Return the data as a JSON object
-                    return Json(data);
+                    string csvUrl = "https://raw.githubusercontent.com/mukeshjedai/Auscitfiles/main/AustralianCitizenshipQuestionAnswer.csv";
+                    using (MemoryStream stream = new MemoryStream(client.DownloadData(csvUrl)))
+                    using (StreamReader reader = new StreamReader(stream))
+                    using (CsvReader csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var data = csv.GetRecords<CitizenshipQuestionAnswer>().ToList();
+                        return Json(data);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error downloading or parsing CSV"); 
+                return StatusCode(500, "Internal server error"); 
             }
         }
     }

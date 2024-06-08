@@ -7,13 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="Working code with colors.">
-      <change afterPath="$PROJECT_DIR$/TavelApp/Controllers/LoginController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Login.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Login.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" afterDir="false" />
-    </list>
+    <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,9 +18,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c7f6322b139ebc72ce44bf58444bb78ff0dfde58de66a127227ef1e829481c4/MemoryStream.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/mukeshcse/RiderProjects/TavelApp/TavelApp/Controllers/HomeController.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -85,7 +81,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1717819648349</updated>
-      <workItem from="1717819649439" duration="10721000" />
+      <workItem from="1717819649439" duration="13815000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
