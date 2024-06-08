@@ -1,0 +1,194 @@
+Index: TavelApp/Views/Login.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TavelApp/Views/Login.cshtml b/TavelApp/Views/Login.cshtml
+new file mode 100644
+--- /dev/null	(date 1717829987042)
++++ b/TavelApp/Views/Login.cshtml	(date 1717829987042)
+@@ -0,0 +1,47 @@
++@page
++@model TavelApp.Pages.Login
++
++@{
++    Layout = null;
++}
++
++<!DOCTYPE html>
++<html>
++<head>
++    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID">
++    <script src="https://accounts.google.com/gsi/client" async defer></script> 
++    <script>
++        function handleCredentialResponse(response) {
++            // Send the ID token to your server for verification
++            fetch('/Login?handler=GoogleSignIn', { 
++                method: 'POST',
++                headers: { 'Content-Type': 'application/json' },
++                body: JSON.stringify({ credential: response.credential })
++            })
++            .then(response => {
++                if (response.ok) {
++                    // Successful login, redirect or update UI
++                    window.location.href = '/Dashboard'; // Example redirect
++                } else {
++                    // Handle login errors
++                    console.error('Google Sign-In failed'); 
++                }
++            });
++        }
++
++        window.onload = function () {
++            google.accounts.id.initialize({
++                client_id: "YOUR_GOOGLE_CLIENT_ID",
++                callback: handleCredentialResponse
++            });
++            google.accounts.id.renderButton(
++                document.getElementById("buttonDiv"),
++                { theme: "outline", size: "large" }  
++            );
++        }
++    </script>
++</head>
++<body>
++<div id="buttonDiv"></div>
++</body>
++</html>
+\ No newline at end of file
+Index: TavelApp/TavelApp.csproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><Project Sdk=\"Microsoft.NET.Sdk.Web\">\n\n  <PropertyGroup>\n    <TargetFramework>net6.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n\n  <ItemGroup>\n    <PackageReference Include=\"CsvHelper\" Version=\"30.0.1\" />\n    <PackageReference Include=\"Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation\" Version=\"6.0.0\" />\n  </ItemGroup>\n\n</Project>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TavelApp/TavelApp.csproj b/TavelApp/TavelApp.csproj
+--- a/TavelApp/TavelApp.csproj	(revision ecd1091cdc9574f9db0739331229ea2765b9ee69)
++++ b/TavelApp/TavelApp.csproj	(date 1717830147100)
+@@ -8,6 +8,9 @@
+ 
+   <ItemGroup>
+     <PackageReference Include="CsvHelper" Version="30.0.1" />
++    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
++    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
++    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
+   </ItemGroup>
+ 
+Index: TavelApp/Views/Home/Index.cshtml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>@page\n\n<script type=\"text/javascript\" src=\"[https://code.jquery.com/jquery-3.5.1.js](https://code.jquery.com/jquery-3.5.1.js)\"></script>\n<script type=\"text/javascript\" src=\"[https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js](https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js)\"></script>\n<link rel=\"stylesheet\" href=\"[https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css](https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css)\" />\n\n<p>Correct answers: <span id=\"correctCounter\">0</span></p>\n<p id=\"startQuiz\">Site visited: @ViewBag.Message</p>\n\n<div class=\"text-center\">\n    <h1 class=\"display-4\">Australian Citizenship Practice Test</h1>\n</div>\n\n<table id=\"example\" class=\"display\" style=\"width:100%\">\n    <thead>\n    <tr>\n        <th id=\"question\">Question</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr></tr>\n    </tbody>\n</table>\n\n<script>\n    document.addEventListener(\"DOMContentLoaded\", function () {\n        var xhttp = new XMLHttpRequest();\n        xhttp.onreadystatechange = function () {\n            if (this.readyState == 4 && this.status == 200) {\n                var data = JSON.parse(this.responseText);\n                var correctCount = 0;\n\n                for (var i = 0; i < data.length; i++) {\n                    var tr = document.createElement(\"tr\");\n                    var tdQuestion = document.createElement(\"th\");\n                    tdQuestion.textContent = data[i].question;\n                    tr.appendChild(tdQuestion);\n\n                    // Create hidden answer cell\n                    var tdAnswer = document.createElement(\"td\");\n                    tdAnswer.textContent = data[i].answer;\n                    tdAnswer.style.display = \"none\"; // Hide the answer cell\n                    tr.appendChild(tdAnswer);\n\n                    var options = [data[i].option1, data[i].option2, data[i].option3, data[i].option4];\n\n                    for (var j = 0; j < options.length; j++) {\n                        var tdOption = document.createElement(\"td\");\n                        var label = document.createElement(\"label\");\n                        var input = document.createElement(\"input\");\n                        input.type = \"radio\";\n                        input.name = \"answer_\" + i;\n                        input.value = options[j];\n\n                        input.addEventListener(\"change\", function() {\n                            \n                            var row = this.closest(\"tr\");\n                            var correctAnswer = row.querySelector(\"td:nth-child(2)\").textContent -1; // Get answer from hidden cell\n                            var allOptions = row.querySelectorAll(\"input[type=radio]\");\n                            //console.log(correctAnswer)\n                            var selectedIndex = -1; // Initialize to -1 (not found)\n                            for (var i = 0; i < allOptions.length; i++) {\n                                if (allOptions[i].checked) {\n                                    selectedIndex = i; // Found the selected radio button\n                                    break;\n                                }\n                            }\n                            \n                            for (var k = 0; k < allOptions.length; k++) {\n                                allOptions[k].disabled = true;\n                                //console.log(selectedAnswer)\n                                var cell = allOptions[k].closest(\"td\");\n                                cell.style.backgroundColor = selectedIndex === correctAnswer ? \"#66ff66\" : \"#ff6666\";\n                            }\n\n                            if (selectedIndex  === correctAnswer) {\n                                correctCount++;\n                                document.getElementById(\"correctCounter\").textContent = correctCount;\n                            }\n                        });\n\n                        label.textContent = options[j];\n                        label.insertBefore(input, label.firstChild);\n                        tdOption.appendChild(label);\n                        tr.appendChild(tdOption);\n                    }\n\n                    document.getElementById(\"example\").getElementsByTagName(\"tbody\")[0].appendChild(tr);\n                }\n            }\n        };\n\n        xhttp.open(\"GET\", \"/api/Topics\", true);\n        xhttp.setRequestHeader(\"Content-type\", \"application/json\");\n        xhttp.send();\n    });\n</script>\n\n<script>\n    $('#example').DataTable({\n        \"language\": {\n            \"paginate\": {\n                \"previous\": \"\",\n                \"next\": \"Next\"\n            }\n        },\n        paging: true,\n        ordering: false,\n        info: false,\n        searching: false,\n        lengthChange: false,\n        \"columnDefs\": [\n            { \"targets\": [1], \"visible\": false } // Hide the second column (answer)\n        ]\n    });\n</script>\n\n<style>\n    th {\n        background-color: #00638f;\n        color: #fff;\n        padding: 10px;\n    }\n\n    tr {\n        background-color: #f2f2f2;\n        color: #00638f;\n        padding: 10px;\n    }\n\n    input[type=radio] {\n        margin-right: 10px;\n    }\n</style>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TavelApp/Views/Home/Index.cshtml b/TavelApp/Views/Home/Index.cshtml
+--- a/TavelApp/Views/Home/Index.cshtml	(revision ecd1091cdc9574f9db0739331229ea2765b9ee69)
++++ b/TavelApp/Views/Home/Index.cshtml	(date 1717828967033)
+@@ -5,6 +5,7 @@
+ <link rel="stylesheet" href="[https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css](https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css)" />
+ 
+ <p>Correct answers: <span id="correctCounter">0</span></p>
++<p>Wrong answers: <span id="wrongCounter">0</span></p>
+ <p id="startQuiz">Site visited: @ViewBag.Message</p>
+ 
+ <div class="text-center">
+@@ -29,6 +30,7 @@
+             if (this.readyState == 4 && this.status == 200) {
+                 var data = JSON.parse(this.responseText);
+                 var correctCount = 0;
++                var wrongCount = 0;
+ 
+                 for (var i = 0; i < data.length; i++) {
+                     var tr = document.createElement("tr");
+@@ -76,6 +78,9 @@
+                             if (selectedIndex  === correctAnswer) {
+                                 correctCount++;
+                                 document.getElementById("correctCounter").textContent = correctCount;
++                            } else {
++                                wrongCount++;
++                                document.getElementById("wrongCounter").textContent = wrongCount;
+                             }
+                         });
+ 
+Index: TavelApp/Controllers/LoginController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TavelApp/Controllers/LoginController.cs b/TavelApp/Controllers/LoginController.cs
+new file mode 100644
+--- /dev/null	(date 1717830021988)
++++ b/TavelApp/Controllers/LoginController.cs	(date 1717830021988)
+@@ -0,0 +1,47 @@
++using Microsoft.AspNetCore.Mvc;
++
++namespace TavelApp.Controllers;
++
++public class LoginController : Controller
++{
++    // GET
++    public IActionResult Index()
++    {
++        return View();
++    }
++    public async Task<IActionResult> OnPostGoogleSignInAsync([FromBody] GoogleSignInRequest request)
++    {
++        // (1) Verify the ID token received from the frontend using Google's libraries
++        var settings = new GoogleJsonWebSignature.ValidationSettings()
++        {
++            Audience = new List<string>() { "YOUR_GOOGLE_CLIENT_ID" } // Add your Client ID here
++        };
++
++        var payload = await GoogleJsonWebSignature.ValidateAsync(request.Credential, settings);
++
++        // (2) Check if the user exists in your database. If not, create a new user.
++        var user = await _userManager.FindByEmailAsync(payload.Email);
++        if (user == null)
++        {
++            // Create a new user
++            user = new ApplicationUser 
++            {
++                UserName = payload.Email, 
++                Email = payload.Email,
++                // ... (Set other user properties)
++            };
++
++            var result = await _userManager.CreateAsync(user);
++            if (!result.Succeeded)
++            {
++                return BadRequest(result.Errors); 
++            }
++        }
++    
++        // (3) Sign in the user
++        await _signInManager.SignInAsync(user, isPersistent: false); 
++
++        return new JsonResult(new { message = "Login successful" });
++    }
++
++}
+\ No newline at end of file
+Index: TavelApp/Views/Login.cshtml.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TavelApp/Views/Login.cshtml.cs b/TavelApp/Views/Login.cshtml.cs
+new file mode 100644
+--- /dev/null	(date 1717829881068)
++++ b/TavelApp/Views/Login.cshtml.cs	(date 1717829881068)
+@@ -0,0 +1,11 @@
++using Microsoft.AspNetCore.Mvc.RazorPages;
++
++namespace TavelApp.Pages;
++
++public class Login : PageModel
++{
++    public void OnGet()
++    {
++        
++    }
++}
+\ No newline at end of file
