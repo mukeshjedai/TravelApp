@@ -6,11 +6,15 @@
 
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
-<p>Correct answers: <span id="correctCounter">0</span></p>
+
 <table id="example" class="display" style="width:100%">
     <thead>
-    <tr>
-        <th id="question">Question</th>
+    <tr >
+        <th  style="background-color: #164549">Question</th>
+        <th  style="background-color: #164549">Option</th>
+        <th  style="background-color: #164549">Option</th>
+        <th  style="background-color: #164549">Option</th>
+        <th  style="background-color: #164549">Option</th>
     </tr>
     </thead>
     <tbody>
@@ -25,11 +29,13 @@
             if (this.readyState == 4 && this.status == 200) {
                 var data = JSON.parse(this.responseText);
                 var correctCount = 0;
+                var wrongCount = 0;
 
                 for (var i = 0; i < data.length; i++) {
                     var tr = document.createElement("tr");
                     var tdQuestion = document.createElement("th");
                     tdQuestion.textContent = data[i].question;
+                    tdQuestion.style.backgroundColor = "#164549";
                     tr.appendChild(tdQuestion);
 
                     // Create hidden answer cell
@@ -72,6 +78,9 @@
                             if (selectedIndex  === correctAnswer) {
                                 correctCount++;
                                 document.getElementById("correctCounter").textContent = correctCount;
+                            }else {
+                                wrongCount++;
+                                document.getElementById("wrongCounter").textContent = wrongCount;
                             }
                         });
 
