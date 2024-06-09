@@ -1,16 +1,12 @@
 ﻿@page
 
-<script type="text/javascript" src="[https://code.jquery.com/jquery-3.5.1.js](https://code.jquery.com/jquery-3.5.1.js)"></script>
-<script type="text/javascript" src="[https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js](https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js)"></script>
-<link rel="stylesheet" href="[https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css](https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css)" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
 <p>Correct answers: <span id="correctCounter">0</span></p>
-<p id="startQuiz">Site visited:</p>
-
-<div class="text-center">
-    <h1 class="display-4">Australian Citizenship Practice Test</h1>
-</div>
-
 <table id="example" class="display" style="width:100%">
     <thead>
     <tr>
@@ -97,23 +93,31 @@
 </script>
 
 <script>
-    $('#example').DataTable({
-        "language": {
-            "paginate": {
-                "previous": "",
-                "next": "Next"
-            }
-        },
-        paging: true,
-        ordering: false,
-        info: false,
-        searching: false,
-        lengthChange: false,
-        "columnDefs": [
-            { "targets": [1], "visible": false } // Hide the second column (answer)
-        ]
+    
+    $(document).ready(function() {
+        
+        let table  = new DataTable('#example',{
+            "language": {
+                "paginate": {
+                    "previous": "",
+                    "next": "Next Question"
+                }
+            },
+            paging: true,
+            pageLength: 1,
+            ordering: false,
+            info: false,
+            searching: false,
+            lengthChange: false,
+            "columnDefs": [
+                { "targets": [1], "visible": false }
+            ]
+        });
     });
+
 </script>
+
+
 
 <style>
     th {

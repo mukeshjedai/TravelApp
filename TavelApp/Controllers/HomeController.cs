@@ -20,40 +20,14 @@ namespace TavelApp.Controllers
         {
             _webHostEnvironment = webHostEnvironment;
         }
-      public static  int tempbag = 0;
 
         public IActionResult Index()
         {
-            ViewBag.Message = tempbag;
-
-            tempbag = tempbag + 1;
             ViewData["Title"] = "Australian Citizenship Practice";
 
-            
-
-            // Set the Questions property of the IndexModel instance
-
-            // Pass the IndexModel instance to the View method
             return View();
         }
 
     }
-
-    public class QuestionData
-    {
-        [Name("Question")]
-        public string QuestionText { get; set; }
-
-        [Name("Option1")]
-        public string Answer1 { get; set; }
-
-        [Name("Option2")]
-        public string Answer2 { get; set; }
-
-        [Name("Option3")]
-        public string Answer3 { get; set; }
-
-        [Name("Option4")]
-        public string Answer4 { get; set; }
-    }
+    
 }
