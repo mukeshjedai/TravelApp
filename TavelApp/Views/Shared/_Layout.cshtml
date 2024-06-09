@@ -1,38 +1,55 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta name="google-signin-client_id" content="306650975913-3i6b7im2q5fe45aap6m6kvmu7k9ucsbp.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Autralian Cititzenship Test</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TavelApp.styles.css" asp-append-version="true" />
 </head>
-
+<script src="https://accounts.google.com/gsi/client" async></script>
 
 <body>
 
 <div  style="visibility:visible; color: white; background-color:#164549">
     <p>Australian Citizenship Practice Test</p>
 </div>
-<div style="position: fixed; background-color: #164549; color: white">
-    <div>Correct: <div id="correctCounter">0</div></div>
+<div style="position: fixed;margin-left:90%;float: right; background-color: #164549; height: 25px; color: white">
+    <span>Correct: </span>
+    <span id="correctCounter">0</span>
 </div>
-<div style="position: fixed; background-color: #164549; color: white; margin-top: 5%;">
-    <div>Wrong: <div id="wrongCounter">0</div></div>
+<div style="position: fixed;float: right;margin-left: 90%; background-color: #164549; height:25px; color: white; margin-top: 5%;">
+    <span>Wrong: </span>
+        <span id="wrongCounter">0</span>
 </div>
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large"
+     data-theme="outline"
+     data-text="sign_in_with"
+     data-shape="rectangular"
+     data-logo_alignment="left"
+     data-onsuccess="onSignIn">
+    
+</div>
+<div id="buttonDiv" style="float:right; visibility: hidden"></div>
+<a href="#"  onclick="signOut();" style="float:right; visibility: hidden">Sign out</a>
 <div class="container" style="">
        
-            @RenderBody()
+    @RenderBody()
         
-    </div>
+</div>
 
   
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync("Scripts", required: false)
 </body>
+
+
 </html>

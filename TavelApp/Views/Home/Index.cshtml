@@ -7,6 +7,7 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
 
+
 <table id="example" class="display" style="width:100%;" >
     <thead>
     <tr>
@@ -126,7 +127,67 @@
     });
 
 </script>
+<script>
+    async function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
 
+        try {
+            // 1. Decode the JWT token 
+            const base64Url = response.credential.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            const decodedToken = JSON.parse(jsonPayload);
+
+
+            // 2. Extract relevant profile information
+            const profile = {
+                name: decodedToken.name,
+                email: decodedToken.email,
+                picture: decodedToken.picture,
+                // Add other fields you need (e.g., given_name, family_name)
+            };
+
+
+            // 3. Print the profile (or use it in your application)
+            console.log("User Profile:", profile);
+
+            // Optionally, display the profile in your UI (replace with your actual UI logic)
+            // document.getElementById('profile-name').textContent = profile.name;
+            // document.getElementById('profile-email').textContent = profile.email;
+            // document.getElementById('profile-picture').src = profile.picture;
+
+        } catch (error) {
+            console.error("Error decoding ID token:", error);
+        }
+    }
+
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "306650975913-3i6b7im2q5fe45aap6m6kvmu7k9ucsbp.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "large" }  // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+    }
+</script>
+<script>
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+    }
+
+   
+    
+    
+</script>
 
 
 <style>
