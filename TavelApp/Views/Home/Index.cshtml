@@ -69,13 +69,22 @@
                                     break;
                                 }
                             }
-                            
+
                             for (var k = 0; k < allOptions.length; k++) {
                                 allOptions[k].disabled = true;
-                                //console.log(selectedAnswer)
                                 var cell = allOptions[k].closest("td");
-                                cell.style.backgroundColor = selectedIndex === correctAnswer ? "#66ff66" : "#ff6666";
+
+                                // Determine the background color for each option
+                                if (k === correctAnswer) {
+                                    cell.style.backgroundColor = "#28FD93"; // Always green for the correct answer
+                                } else if (k === selectedIndex) {
+                                    cell.style.backgroundColor = "#ffcdd2";//"#FAECE0"; // Red for the incorrect selected answer
+                                } else {
+                                    //cell.style.backgroundColor = "#FFFFFF";//"#FAECE0"; // Light green for other unselected options
+                                }
                             }
+
+
 
                             if (selectedIndex  === correctAnswer) {
                                 correctCount++;
