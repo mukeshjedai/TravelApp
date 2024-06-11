@@ -158,6 +158,34 @@
                 picture: decodedToken.picture,
                 // Add other fields you need (e.g., given_name, family_name)
             };
+            
+
+            const url = "/api/User/register"; // Adjusted endpoint to remove query parameters
+            console.log("calling user registration"+profile.email);
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(JSON.stringify(profile)); // Pass data as JSON in the request body
+
+
+            const emailToSend = profile.email; // Assuming 'profile' is an object with an 'email' property
+
+            fetch('/api/User/GetUser?email=' + encodeURIComponent(emailToSend))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json(); // Parse JSON response (adjust if not JSON)
+                })
+                .then(userData => {
+                    // Handle the retrieved user data (e.g., display on the page)
+                    console.log("Retrieved user:", userData);
+                })
+                .catch(error => {
+                    // Handle errors gracefully
+                    console.error('Error fetching user:', error);
+                    // Optionally, display an error message to the user
+                });
 
 
             // 3. Print the profile (or use it in your application)
