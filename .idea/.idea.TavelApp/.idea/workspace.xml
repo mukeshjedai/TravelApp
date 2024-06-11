@@ -8,13 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TavelApp/Controllers/PrivacyController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Privacy/Index.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Privacy.cshtml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Privacy.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Privacy/Index.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Shared/_Layout.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1717819648349</updated>
       <workItem from="1717819649439" duration="19219000" />
-      <workItem from="1718078687040" duration="9864000" />
+      <workItem from="1718078687040" duration="11176000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
