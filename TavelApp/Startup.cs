@@ -1,11 +1,18 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+﻿using System.IdentityModel.Tokens.Jwt; 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using AspNet.Security.OAuth.Apple;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google; // For accessing user information
+
 
 namespace TavelApp
 {
@@ -40,6 +47,37 @@ namespace TavelApp
                     options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                     options.SaveTokens = true; // Important for later use
                 });
+            /**
+            services.AddAuthentication().AddApple(options =>
+                {
+                    options.ClientId = Configuration["AppleClientId"];  
+                    options.ClientSecret = Configuration["AppleClientSecret"]; 
+                    options.SaveTokens = true;
+
+                    options.Events = new AppleAuthenticationEvents
+                    {
+                        OnCreatingTicket = async context =>
+                        {
+                            var idToken = context.TokenResponse.Response["id_token"].ToString();
+                            var tokenHandler = new JwtSecurityTokenHandler();
+                            var validationParameters = new TokenValidationParameters
+                            {
+                                ValidateIssuer = true,
+                                ValidIssuer = "https://appleid.apple.com",
+                                ValidateAudience = true,
+                                ValidAudience = Configuration["AppleClientId"],
+                                ValidateLifetime = true
+                            };
+
+                            // Validate the ID token and extract claims
+                            var principal = tokenHandler.ValidateToken(idToken, validationParameters, out _);
+                            context.Principal = principal;
+                        }
+                    };
+                });
+                
+                **/
+
 
 
         }

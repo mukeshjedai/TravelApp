@@ -9,10 +9,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/shelf/Uncommitted_changes_before_Update_at_8_6_2024__10_04_pm__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/shelf/Uncommitted_changes_before_Update_at_8_6_2024__10_04_pm__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Startup.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +29,10 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/e2ca2f8a1c5b643df628c85842a8f2b362b2c441/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -102,7 +106,7 @@
       <updated>1717819648349</updated>
       <workItem from="1717819649439" duration="19219000" />
       <workItem from="1718078687040" duration="17676000" />
-      <workItem from="1718184144801" duration="10609000" />
+      <workItem from="1718184144801" duration="12344000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
