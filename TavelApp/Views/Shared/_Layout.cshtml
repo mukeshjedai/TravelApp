@@ -21,20 +21,27 @@
     </script>
 </head>
 <script src="https://accounts.google.com/gsi/client"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <body>
 
 <div  style="visibility:visible; color: white; background-color:#164549">
     <p>Australian Citizenship Practice Test</p>
 </div>
-<div style="position: fixed;margin-left:90%;float: right; background-color: #164549; height: 25px; color: white">
+<div style="position: fixed; top: 20px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
     <span>Correct: </span>
     <span id="correctCounter">0</span>
 </div>
-<div style="position: fixed;float: right;margin-left: 90%; background-color: #164549; height:25px; color: white; margin-top: 5%;">
+
+<div style="position: fixed; top: 60px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
     <span>Wrong: </span>
-        <span id="wrongCounter">0</span>
+    <span id="wrongCounter">0</span>
 </div>
+<div style="position: fixed; top: 100px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
+    
+    <div class="g-signin2" style="float: right; margin-left: 90%" data-onsuccess="onSignIn"></div>
+</div>
+
 <div class="g_id_signin"
      data-type="standard"
      data-size="large"
