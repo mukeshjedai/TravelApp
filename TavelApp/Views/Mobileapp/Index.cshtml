@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+</head>
+<body>
+<div>
+    <p>Correct Answers: <span id="correctCounter">0</span></p>
+    <p>Wrong Answers: <span id="wrongCounter">0</span></p>
+</div>
+
+
+<div id="questionContainer" class="question-container">
+    <table id="example" class="display" style="width:100%;">
+        <tbody>
+        
+        </tbody>
+    </table>
+</div>
+
+</body>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    
+    var correctCount = 0;
+    var wrongCount = 0;
+        var currentQuestionIndex = 0;
+        var data; // Store the fetched data globally
+
+        // Function to load a question
+        function loadQuestion(index) {
+            var tbody = document.getElementById("example").getElementsByTagName("tbody")[0];
+            tbody.innerHTML = ""; // Clear previous question
+
+            if (index < data.length) {
+                var questionData = data[index];
+
+                var questionRow = tbody.insertRow();
+                var questionHeader = questionRow.insertCell();
+                questionHeader.textContent = questionData.question;
+                //questionHeader.style.backgroundColor = "#164549";
+
+                var hiddenAnswerCell = questionRow.insertCell();
+                hiddenAnswerCell.textContent = questionData.answer;
+                hiddenAnswerCell.style.display = "block";
+                hiddenAnswerCell.id = "correctAnswer";  // Added ID for easy reference
+
+
+                // Create a new row for each option
+                for (var i = 1; i <= 4; i++) {
+                    var optionRow = tbody.insertRow();
+                    var optionCell = optionRow.insertCell();
+                    var label = document.createElement("label");
+                    var radio = document.createElement("input");
+                    radio.type = "radio";
+                    radio.name = "option";
+                    radio.value = i;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(questionData["option" + i]));
+                    optionCell.appendChild(label);
+                    
+                    // Add event listener to radio button (same as before)
+                    optionRow.addEventListener("change", handleOptionChange);
+                }
+            }
+        }
+
+        // Function to handle radio button clicks (feedback, updating counters)
+        function handleOptionChange() {
+            var row = this.closest("tr");
+            var selectedOptionValue = this.value;
+            var questionRow = row.previousElementSibling;
+
+            // Finding the correct answer (more robust)
+            var correctAnswerCell = document.getElementById("correctAnswer");
+            var correctAnswer = correctAnswerCell.textContent;
+            
+            console.log(correctAnswer);
+
+            if (!correctAnswer) {
+                console.error("Correct answer not found for this question.");
+                return; // Exit early if answer is missing
+            }
+
+            // Disable all options (simplified)
+            var options = questionRow.nextElementSibling.querySelectorAll("input[type='radio']");
+            options.forEach(function(option) {
+                option.disabled = true;
+               
+                var optionCell = option.closest("tr").closest("td");
+                // Add !important to the color to ensure correct styling is applied 
+               
+            });
+            
+          
+            // Color feedback (more efficient)
+            options.forEach(function(option) {
+                var optionCell = option.closest("tr").querySelector("td");
+                var allOptions = row.querySelectorAll("input[type=radio]");
+
+                var selectedIndex = -1; // Default value if no option is selected
+
+                for (var i = 1; i <= 4; i++) {
+                    //console.log("option value"+options[1]);
+
+                    if (allOptions[i-1].checked) {
+
+                        selectedIndex = i;
+                        
+
+                        break; // Exit loop once selected option is found
+                    }
+
+                }
+
+                for (var j = 1; j <= allOptions.length; j++) {
+
+                    //allOptions[j].disabled = true;
+                }
+               // allOptions.forEach((element) => element.disabled=true);
+
+                for (var k = 1; k <= allOptions.length; k++) {
+                            //allOptions[k].disabled = true;
+                            //var cell = allOptions[k].closest("td");
+                            
+                            
+                            //console.log(allOptions[k]);
+                           // console.log(allOptions[k].value);
+
+                            // Determine the background color for each option
+                            if (allOptions[k].value === correctAnswer) {
+                                allOptions[k].style.backgroundColor = "#28FD93"; // Always green for the correct answer
+                            } else if (allOptions[k].value === selectedIndex) {
+                                allOptions[k].style.backgroundColor = "#ffcdd2";//"#FAECE0"; // Red for the incorrect selected answer
+                            } else {
+                                //cell.style.backgroundColor = "#FFFFFF";//"#FAECE0"; // Light green for other unselected options
+                            }
+                    }
+            });
+            // Update counters
+            selectedOptionValue === correctAnswer ? correctCount++ : wrongCount++;
+            document.getElementById("correctCounter").textContent = correctCount;
+            document.getElementById("wrongCounter").textContent = wrongCount;
+        }
+
+        // Fetch questions from the API
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(this.responseText);
+                loadQuestion(currentQuestionIndex); // Load the first question initially
+            }
+        };
+        xhttp.open("GET", "/api/Topics", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+
+        // Add "Next" button and its functionality
+        var nextButton = document.createElement("button");
+        nextButton.textContent = "Next";
+        nextButton.addEventListener("click", function () {
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        });
+        document.body.appendChild(nextButton); // Add button to the page
+    });
+</script>
+
+</html>
