@@ -48,7 +48,7 @@
 
                 var hiddenAnswerCell = questionRow.insertCell();
                 hiddenAnswerCell.textContent = questionData.answer;
-                hiddenAnswerCell.style.display = "block";
+                hiddenAnswerCell.style.display = "none";
                 hiddenAnswerCell.id = "correctAnswer";  // Added ID for easy reference
 
 
@@ -81,70 +81,47 @@
             var correctAnswerCell = document.getElementById("correctAnswer");
             var correctAnswer = correctAnswerCell.textContent;
             
-            console.log(correctAnswer);
+            //console.log(correctAnswer);
 
             if (!correctAnswer) {
                 console.error("Correct answer not found for this question.");
                 return; // Exit early if answer is missing
             }
 
-            // Disable all options (simplified)
-            var options = questionRow.nextElementSibling.querySelectorAll("input[type='radio']");
-            options.forEach(function(option) {
-                option.disabled = true;
-               
-                var optionCell = option.closest("tr").closest("td");
-                // Add !important to the color to ensure correct styling is applied 
-               
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            var selectedIndex = -1;
+            radioButtons.forEach(radio => {
+            console.log(radio);
+                radioButtons.forEach(otherRadio => {
+                //console.log(radioButtons[otherRadio]);
+                        if (otherRadio.checked)
+                        {
+                            selectedIndex = otherRadio.value;
+                            if (selectedIndex === correctAnswer){
+                                otherRadio.closest('tr').style.background = '#6CF327';
+                            }else{
+                                otherRadio.closest('tr').style.background = '#FAD2D2';
+                            }
+                            //console.log(selectedIndex);
+                        }
+                        otherRadio.disabled = true;
+                });
             });
             
-          
-            // Color feedback (more efficient)
-            options.forEach(function(option) {
-                var optionCell = option.closest("tr").querySelector("td");
-                var allOptions = row.querySelectorAll("input[type=radio]");
+            console.log("selectedIndex"+selectedIndex+"correctAnswer"+correctAnswer);
+            
+            if (selectedIndex === correctAnswer){
+                
+                correctCount ++;
+            }else{
+                wrongCount++;
+            }
 
-                var selectedIndex = -1; // Default value if no option is selected
 
-                for (var i = 1; i <= 4; i++) {
-                    //console.log("option value"+options[1]);
 
-                    if (allOptions[i-1].checked) {
 
-                        selectedIndex = i;
-                        
-
-                        break; // Exit loop once selected option is found
-                    }
-
-                }
-
-                for (var j = 1; j <= allOptions.length; j++) {
-
-                    //allOptions[j].disabled = true;
-                }
-               // allOptions.forEach((element) => element.disabled=true);
-
-                for (var k = 1; k <= allOptions.length; k++) {
-                            //allOptions[k].disabled = true;
-                            //var cell = allOptions[k].closest("td");
-                            
-                            
-                            //console.log(allOptions[k]);
-                           // console.log(allOptions[k].value);
-
-                            // Determine the background color for each option
-                            if (allOptions[k].value === correctAnswer) {
-                                allOptions[k].style.backgroundColor = "#28FD93"; // Always green for the correct answer
-                            } else if (allOptions[k].value === selectedIndex) {
-                                allOptions[k].style.backgroundColor = "#ffcdd2";//"#FAECE0"; // Red for the incorrect selected answer
-                            } else {
-                                //cell.style.backgroundColor = "#FFFFFF";//"#FAECE0"; // Light green for other unselected options
-                            }
-                    }
-            });
             // Update counters
-            selectedOptionValue === correctAnswer ? correctCount++ : wrongCount++;
+            //selectedOptionValue === correctAnswer ? correctCount++ : wrongCount++;
             document.getElementById("correctCounter").textContent = correctCount;
             document.getElementById("wrongCounter").textContent = wrongCount;
         }
