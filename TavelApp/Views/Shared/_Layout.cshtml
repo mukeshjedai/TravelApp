@@ -30,35 +30,7 @@
 
 <body>
 
-<div  style="visibility:visible; color: white; background-color:#164549">
-    <h4>Australian Citizenship Practice Test</h4>
-</div>
-<div style="position: fixed; top: 20px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
-    <span>Correct: </span>
-    <span id="correctCounter">0</span>
-</div>
 
-<div style="position: fixed; top: 60px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
-    <span>Wrong: </span>
-    <span id="wrongCounter">0</span>
-</div>
-<div style="position: fixed; bottom: 20px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
-    <div class="g-signin2" style="float: right; margin-left: 90%;" data-onsuccess="onSignIn"></div>
-</div>
-
-
-<div class="g_id_signin"
-     data-type="standard"
-     data-size="large"
-     data-theme="outline"
-     data-text="sign_in_with"
-     data-shape="rectangular"
-     data-logo_alignment="left"
-     data-onsuccess="onSignIn">
-    
-</div>
-<div id="buttonDiv" style="float:right; visibility: hidden"></div>
-<a href="#"  onclick="signOut();" style="float:right; visibility: hidden">Sign out</a>
 <div class="container" style="">
        
     @RenderBody()
