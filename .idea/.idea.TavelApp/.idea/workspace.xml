@@ -10,8 +10,7 @@
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/HomeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/HomeController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +105,7 @@
       <workItem from="1717819649439" duration="19219000" />
       <workItem from="1718078687040" duration="17676000" />
       <workItem from="1718184144801" duration="12344000" />
-      <workItem from="1718280383749" duration="2472000" />
+      <workItem from="1718280383749" duration="2716000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />

@@ -1,33 +1,28 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration.Attributes;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor.Infrastructure;
-using Microsoft.Extensions.Logging;
-using System.Formats.Asn1;
-using System.IO;
-using System.Linq;
-using TavelApp.Pages;
-using TavelApp.Views;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http; // Added for HttpContext
 
 namespace TavelApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public HomeController( IWebHostEnvironment webHostEnvironment)
-        {
-            _webHostEnvironment = webHostEnvironment;
-        }
+        // ... (Existing code: Constructor, IWebHostEnvironment)
 
         public IActionResult Index()
         {
-            ViewData["Title"] = "Australian Citizenship Practice";
+            // 1. Device Detection (Replace with your preferred method)
+            var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+            bool isMobileDevice = userAgent.Contains("Mobile") || userAgent.Contains("iPhone") || userAgent.Contains("Android");
 
-            return View();
+            // 2. Redirect Logic (Example: Different views for mobile/desktop)
+            if (isMobileDevice)
+            {
+                return RedirectToAction("Index", "Mobileapp");
+
+            }
+            else
+            {
+                return View(); // Default view for non-mobile devices
+            }
         }
-
     }
-    
 }
