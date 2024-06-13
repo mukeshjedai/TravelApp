@@ -80,8 +80,6 @@
             // Finding the correct answer (more robust)
             var correctAnswerCell = document.getElementById("correctAnswer");
             var correctAnswer = correctAnswerCell.textContent;
-            
-            //console.log(correctAnswer);
 
             if (!correctAnswer) {
                 console.error("Correct answer not found for this question.");
@@ -91,9 +89,9 @@
             const radioButtons = document.querySelectorAll('input[type="radio"]');
             var selectedIndex = -1;
             radioButtons.forEach(radio => {
-            console.log(radio);
-                radioButtons.forEach(otherRadio => {
-                //console.log(radioButtons[otherRadio]);
+
+                radioButtons.forEach((otherRadio,index) => {
+
                         if (otherRadio.checked)
                         {
                             selectedIndex = otherRadio.value;
@@ -102,13 +100,14 @@
                             }else{
                                 otherRadio.closest('tr').style.background = '#FAD2D2';
                             }
-                            //console.log(selectedIndex);
                         }
+                    if ((index+1).toString().indexOf(correctAnswer)===0){
+                        console.log("Hi");
+                        otherRadio.closest('tr').style.background = '#6CF327';
+                    }
                         otherRadio.disabled = true;
                 });
             });
-            
-            console.log("selectedIndex"+selectedIndex+"correctAnswer"+correctAnswer);
             
             if (selectedIndex === correctAnswer){
                 
