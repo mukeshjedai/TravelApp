@@ -6,6 +6,7 @@
 
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
     AppleID.auth.init({
@@ -32,23 +33,9 @@
     <span>Wrong: </span>
     <span id="wrongCounter">0</span>
 </div>
-<div style="position: fixed; bottom: 20px; right: 20px; background-color: #164549; padding: 5px 10px; color: white; border-radius: 4px;">
-    <div class="g-signin2" style="float: right; margin-left: 90%;" data-onsuccess="onSignIn"></div>
-</div>
 
-
-<div class="g_id_signin"
-     data-type="standard"
-     data-size="large"
-     data-theme="outline"
-     data-text="sign_in_with"
-     data-shape="rectangular"
-     data-logo_alignment="left"
-     data-onsuccess="onSignIn">
-
-</div>
-<div id="buttonDiv" style="float:right; visibility: hidden"></div>
-<a href="#"  onclick="signOut();" style="float:right; visibility: hidden">Sign out</a>
+<div id="buttonDiv" style="float:right; "></div>
+<a href="#" id ="signoutDiv" style="bottom: 0;float: right;right: 0; visibility: hidden;" onclick="">Sign out</a>
 <table id="example" class="display" style="width:100%;" >
     <thead>
     <tr>
@@ -132,6 +119,24 @@
                                 document.getElementById("correctCounter").textContent = correctCount;
                             }else {
                                 wrongCount++;
+                                const wronganswers = {
+                                    email:sessionStorage.getItem('email') == null ? generateSessionId().toString() : sessionStorage.getItem('email'),
+                                    question_number: selectedIndex.toString(),
+                                    // Add other fields you need (e.g., given_name, family_name)
+                                };
+                                
+                                console.log(wronganswers);
+
+                                //console.log("sending data for wrong answer with profile"+wronganswers.email);
+
+                                const url = "/api/Wronganswer/postwronganswer"; // Adjusted endpoint to remove query parameters
+                                ////console.log("calling user registration"+wronganswers);
+                                var xhttp = new XMLHttpRequest();
+                                xhttp.open("POST", url, true);
+                                xhttp.setRequestHeader("Content-type", "application/json");
+                                xhttp.send(JSON.stringify(wronganswers)); // Pass data as JSON in the request body
+
+
                                 document.getElementById("wrongCounter").textContent = wrongCount;
                             }
                         });
@@ -178,9 +183,39 @@
 
 </script>
 <script>
-    async function handleCredentialResponse(response) {
-        console.log("Encoded JWT ID token: " + response.credential);
+   
 
+    function generateSessionId() {
+        let sessionId = sessionStorage.getItem('sessionId');
+
+        if (!sessionId) {
+            sessionId = crypto.randomUUID(); // Modern approach for secure IDs
+            sessionStorage.setItem('sessionId', sessionId);
+        }
+        
+        console.log(sessionId);
+
+        return sessionId;
+    }
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "745450333592-sd40jf6r1uqflv5sgtse93bcnovdqm8q.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "large" }  // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+    }
+
+
+    async function handleCredentialResponse(response) {
+        //console.log("Encoded JWT ID token: " + response.credential);
+
+        document.getElementById("buttonDiv").style.visibility = 'hidden';
+        document.getElementById("signoutDiv").textContent = sessionStorage.getItem("email");
+        document.getElementById("signoutDiv").style.visibility = 'visible';
         try {
             // 1. Decode the JWT token 
             const base64Url = response.credential.split('.')[1];
@@ -199,10 +234,10 @@
                 picture: decodedToken.picture,
                 // Add other fields you need (e.g., given_name, family_name)
             };
-            
+
 
             const url = "/api/User/register"; // Adjusted endpoint to remove query parameters
-            console.log("calling user registration"+profile.email);
+            //console.log("calling user registration"+profile.email);
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", url, true);
             xhttp.setRequestHeader("Content-type", "application/json");
@@ -211,26 +246,18 @@
 
             const emailToSend = profile.email; // Assuming 'profile' is an object with an 'email' property
 
-            fetch('/api/User/GetUser?email=' + encodeURIComponent(emailToSend))
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json(); // Parse JSON response (adjust if not JSON)
-                })
-                .then(userData => {
-                    // Handle the retrieved user data (e.g., display on the page)
-                    console.log("Retrieved user:", userData);
-                })
-                .catch(error => {
-                    // Handle errors gracefully
-                    console.error('Error fetching user:', error);
-                    // Optionally, display an error message to the user
-                });
+
 
 
             // 3. Print the profile (or use it in your application)
-            console.log("User Profile:", profile);
+            //console.log("User Profile:", profile);
+
+
+            sessionStorage.setItem('name', profile.name);
+            sessionStorage.setItem('email', profile.email);
+
+            //console.log(sessionStorage.getItem('name'));
+            //console.log(sessionStorage.getItem('email'));
 
             // Optionally, display the profile in your UI (replace with your actual UI logic)
             // document.getElementById('profile-name').textContent = profile.name;
@@ -238,29 +265,13 @@
             // document.getElementById('profile-picture').src = profile.picture;
 
         } catch (error) {
-            console.error("Error decoding ID token:", error);
+            //console.error("Error decoding ID token:", error);
         }
     }
 
-    window.onload = function () {
-        google.accounts.id.initialize({
-            client_id: "745450333592-sd40jf6r1uqflv5sgtse93bcnovdqm8q.apps.googleusercontent.com",
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-            document.getElementById("buttonDiv"),
-            { theme: "outline", size: "large" }  // customization attributes
-        );
-        google.accounts.id.prompt(); // also display the One Tap dialog
-    }
-</script>
-<script>
-    function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-        });
-    }
+
+
+
 </script>
 
 

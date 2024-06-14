@@ -10,8 +10,7 @@
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/UserController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/WronganswerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/WronganswerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +107,7 @@
       <workItem from="1718078687040" duration="17676000" />
       <workItem from="1718184144801" duration="12344000" />
       <workItem from="1718280383749" duration="12236000" />
-      <workItem from="1718364342703" duration="9518000" />
+      <workItem from="1718364342703" duration="15223000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
