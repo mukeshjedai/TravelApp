@@ -49,6 +49,6 @@ public class WronganswerController : Controller
             return Ok("User Exists");
         }
         
-        return BadRequest("User registration failed"); 
+        return BadRequest("Wrong Answer Recorded."); 
     }
 }

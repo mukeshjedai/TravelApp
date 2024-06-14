@@ -197,7 +197,25 @@
         });
         document.body.appendChild(nextButton); // Add button to the page
 
-       
+
+
+        // Add "Next" button and its functionality
+        var scoreButton = document.createElement("button");
+        scoreButton.textContent = "Next    ";
+        scoreButton.setAttribute("class", "btn btn-primary"); // Set the variant attribute
+        scoreButton.style.marginTop = "3%";
+        nextButton.style.marginLeft = "4%";
+
+        var indexCounter = document.getElementById("indexCounter");
+        nextButton.addEventListener("click", function () {
+            indexCounter.textContent=("Question "+(currentQuestionIndex+2)+" of 496");
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        });
+        document.body.appendChild(nextButton); // Add button to the page
+
+
+
     });
 
     function generateSessionId() {

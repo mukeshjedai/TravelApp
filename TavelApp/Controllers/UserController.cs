@@ -95,7 +95,7 @@ namespace YourNamespace.Controllers
                 }
                 connection.Close();
 
-                return Ok("User registered successfully");
+                return Ok("Login registered successfully");
             } catch (Exception ex)
             {
                 
