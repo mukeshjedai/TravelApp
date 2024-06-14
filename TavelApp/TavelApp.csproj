@@ -21,4 +21,8 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\logo.svg" />
+  </ItemGroup>
+
 </Project>

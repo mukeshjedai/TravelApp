@@ -9,7 +9,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Image/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TavelApp/wwwroot/logo.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
     </list>
@@ -37,7 +40,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2ha64D5OTzj4VUl42ClROpku6SO" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -107,7 +112,7 @@
       <workItem from="1718078687040" duration="17676000" />
       <workItem from="1718184144801" duration="12344000" />
       <workItem from="1718280383749" duration="12236000" />
-      <workItem from="1718364342703" duration="15223000" />
+      <workItem from="1718364342703" duration="15932000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
