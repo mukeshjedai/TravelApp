@@ -47,7 +47,7 @@
 <a href="#"  onclick="signOut();" style="float:right; visibility: hidden">Sign out</a>
 
 <div id="questionContainer" class="question-container">
-    <table id="example" class="display" style="width:100%;; margin-top: 30%">
+    <table id="example" class="display" style="width:100%;; margin-top: 40%">
         <tbody>
 
         </tbody>
@@ -154,6 +154,19 @@
                 
                 correctCount ++;
             }else{
+                const wronganswers = {
+                    email:sessionStorage.getItem('name') == null ? generateSessionId() : sessionStorage.getItem('name'),
+                    question_number: selectedIndex,
+                    // Add other fields you need (e.g., given_name, family_name)
+                };
+
+                const url = "/api/Wronganswer/postwronganswer"; // Adjusted endpoint to remove query parameters
+                //console.log("calling user registration"+wronganswers);
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify(wronganswers)); // Pass data as JSON in the request body
+
                 wrongCount++;
             }
 
@@ -193,9 +206,35 @@
         });
         document.body.appendChild(nextButton); // Add button to the page
 
-      
-
+       
     });
+
+    function generateSessionId() {
+        let sessionId = sessionStorage.getItem('sessionId');
+
+        if (!sessionId) {
+            sessionId = crypto.randomUUID(); // Modern approach for secure IDs
+            sessionStorage.setItem('sessionId', sessionId);
+        }
+
+        return sessionId;
+    }
+    
+    
+
+    function onSignIn(googleUser) {
+        // Get user information from the GoogleUser object
+        var profile = googleUser.getBasicProfile();
+        var name = profile.getName();
+        var email = profile.getEmail();
+
+        // Store in Session Storage (replace with localStorage for more persistent storage)
+        sessionStorage.setItem('name', name);
+        sessionStorage.setItem('email', email);
+
+        // (Optional) Redirect or update your page based on successful sign-in
+    }
+
 </script>
 
 <style>
