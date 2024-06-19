@@ -9,8 +9,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TavelApp/Controllers/ResultsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Results/Index.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TavelApp/Views/Results/Index.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/shelf/Uncommitted_changes_before_Update_at_8_6_2024,_10_04_pm_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/shelf/Uncommitted_changes_before_Update_at_8_6_2024__10_04_pm__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/TavelApp.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,9 +65,9 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\mukes\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\mukes\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\mukes\\AppData\\Local\\Symbols\\src&quot;
+      &quot;/Users/mukeshcse/Library/Application Support/JetBrains/Rider2024.1/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/mukeshcse/Library/Application Support/JetBrains/Rider2024.1/resharper-host/SourcesCache&quot;,
+      &quot;/Users/mukeshcse/Library/Application Support/Symbols/src&quot;
     ]
   }
 }</component>
@@ -109,6 +116,8 @@
       <workItem from="1718184144801" duration="12344000" />
       <workItem from="1718280383749" duration="12236000" />
       <workItem from="1718364342703" duration="16590000" />
+      <workItem from="1718629897505" duration="1209000" />
+      <workItem from="1718807899464" duration="1675000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
