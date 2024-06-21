@@ -2,12 +2,13 @@
 
 namespace TavelApp.Models
 {
-    public class QuestionData : IQuestionData
+    public class QuestionData
     {
-        public string QuestionText { get; set; }
-        public string Answer1 { get; set; }
-        public string Answer2 { get; set; }
-        public string Answer3 { get; set; }
-        public string Answer4 { get; set; }
+        public string Question { get; set; }
+        public string Option1 { get; set; }
+        public string Option2 { get; set; }
+        public string Option3 { get; set; }
+        public string Option4 { get; set; }
+        public string answer { get; set; }
     }
 }

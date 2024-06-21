@@ -35,6 +35,28 @@ public class WronganswerController : Controller
         connection.Close();
         return wrongAnswers > 0;
     }
+    
+    [HttpGet("getWronganswers")] // Use a descriptive endpoint
+    public async Task<ActionResult<IEnumerable<WrongAnswer>>> get(string email)
+    {
+        
+        var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
+
+        // 2. Npgsql Connection Object
+        using var connection = new NpgsqlConnection(connectionString);
+        //connection.Open();
+        await connection.OpenAsync();
+        
+        
+
+        var wrongAnswers = await connection.QueryAsync<QuestionData>(
+            "SELECT  \"Question\", \"Option1\", \"Option2\", \"Option3\", \"Option4\", answer FROM public.\"Questions\" as que inner join user_wronganswers as wa on  wa.question_number = que.id where wa.email = @email",
+            new { Email = email });
+        connection.Close();
+        return Ok(wrongAnswers);
+
+        
+    }
 
 
 

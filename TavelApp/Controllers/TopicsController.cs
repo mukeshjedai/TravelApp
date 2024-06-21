@@ -26,6 +26,7 @@ namespace TravelApp.Controllers
         }
 
         [HttpGet]
+        
         public ActionResult<IEnumerable<CitizenshipQuestionAnswer>> Get()
         {
             try

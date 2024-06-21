@@ -1,39 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<div style="width: 100%;min-width: 100%; color: white; background-color: #164549; right: 0px;">
+    <a href="/">
+    <img width="100px;" src="logo.svg" />
+    </a>
+    Australian Citizenship Practice Test
+</div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Question #</th>
-        <th>Title</th>
-        <th>Save</th>
-        <th>Result</th>
-    </tr>
-    </thead>
-    <tbody>
-   
-    </tbody>
-</table>
+
+<div id="buttonDiv" style="float:right; "></div>
+<a href="#" id ="signoutDiv" style="bottom: 0; visibility: hidden;" onclick="">Sign out</a>
+
+
+
+<div style="display: block">
+    <div style=" background-color: #164549; color: #000000; border-radius: 4px;display: block; width: fit-content">
+        <span style="background-color: #164549;color: white">Correct: </span>
+        <span id="correctCounter" style="background-color: #164549;color: white">0</span>
+        &nbsp;&nbsp;&nbsp;
+        <span style="background-color: #164549;color: white">Wrong: </span>
+        <span id="wrongCounter" style="background-color: #164549;color: white">0</span>
+
+    </div>
+    <div style=" background-color: #ffffff; color: #000000;  border-radius: 4px;display: block;">
+        <span id = "indexCounter"> </span>
+    </div>
+
+    <div id="questionContainer" class="question-container" style="display: block;padding-top: 2%;">
+        <table id="example" class="display" >
+            <tbody>
+
+            </tbody>
+        </table>
+
+    </div>
+    <div id="nextButton" style="display: block"></div>
+
+</div>
+</body>
 
 
 <script>
-    const xhr = new XMLHttpRequest();
-    const endpointUrl = '/Results/getwronganswers?email=mukeshbcc56@gmail.com';
+    document.addEventListener("DOMContentLoaded", function () {
 
-    xhr.open('GET', endpointUrl); // Use 'POST' for sending data
+        var correctCount = 0;
+        var wrongCount = 0;
+        var currentQuestionIndex = 0;
+        var data; // Store the fetched data globally
 
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            const responseData = JSON.parse(xhr.responseText);
-            // Process the responseData (e.g., display in your UI)
-            console.log(responseData);
-        } else {
-            console.error('Error:', xhr.statusText);
+        // Function to load a question
+        function loadQuestion(index) {
+            var tbody = document.getElementById("example").getElementsByTagName("tbody")[0];
+            tbody.innerHTML = ""; // Clear previous question
+            //document.getElementById("indexCounter").textContent = "Question 1 of "+data.length;
+
+            if (index < data.length) {
+            
+                var questionData = data[index];
+
+                var questionRow = tbody.insertRow();
+                var questionHeader = questionRow.insertCell();
+                questionHeader.textContent = questionData.question;
+                questionHeader.style.fontWeight = "900"; // Set the font to bold
+                questionHeader.setAttribute("class", "text-primary-emphasis"); // Set the variant attribute
+                questionHeader.style.display = "block";
+
+
+                var hiddenAnswerCell = questionRow.insertCell();
+                hiddenAnswerCell.textContent = questionData.answer;
+                hiddenAnswerCell.style.display = "none";
+                hiddenAnswerCell.id = "correctAnswer";  // Added ID for easy reference
+
+
+                // Create a new row for each option
+                for (var i = 1; i <= 4; i++) {
+                    var optionRow = tbody.insertRow();
+                    var optionCell = optionRow.insertCell();
+                    var label = document.createElement("label");
+                    label.style.fontWeight = "600"; // Set the font to bold
+                    label.setAttribute("class","form-check-label");
+                    var radio = document.createElement("input");
+                    radio.setAttribute("class","form-check-input");
+                    radio.style.fontWeight = "600"; // Set the font to bold
+
+
+                    radio.type = "radio";
+                    radio.name = "option";
+                    radio.value = i;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(questionData["option" + i]));
+                    optionCell.appendChild(label);
+
+                    // Add event listener to radio button (same as before)
+                    optionRow.addEventListener("change", handleOptionChange);
+                }
+            }
         }
-    };
 
-    xhr.onerror = function() {
-        console.error('Request failed');
-    };
+        // Function to handle radio button clicks (feedback, updating counters)
+        function handleOptionChange() {
+            var row = this.closest("tr");
+            var selectedOptionValue = this.value;
+            var questionRow = row.previousElementSibling;
 
-    xhr.send(); // For 'POST', send the data here: xhr.send(yourData);
+            // Finding the correct answer (more robust)
+            var correctAnswerCell = document.getElementById("correctAnswer");
+            var correctAnswer = correctAnswerCell.textContent;
+
+            if (!correctAnswer) {
+                //console.error("Correct answer not found for this question.");
+                return; // Exit early if answer is missing
+            }
+
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            var selectedIndex = -1;
+            radioButtons.forEach(radio => {
+
+                radioButtons.forEach((otherRadio,index) => {
+
+                    if (otherRadio.checked)
+                    {
+                        selectedIndex = otherRadio.value;
+                        if (selectedIndex === correctAnswer){
+                            otherRadio.closest('tr').style.background = '#6CF327';
+                        }else{
+                            otherRadio.closest('tr').style.background = '#FAD2D2';
+                        }
+                    }
+                    if ((index+1).toString().indexOf(correctAnswer)===0){
+
+                        otherRadio.closest('tr').style.background = '#6CF327';
+                    }
+                    otherRadio.disabled = true;
+                });
+            });
+
+            if (selectedIndex === correctAnswer){
+
+                correctCount ++;
+            }else{
+                const wronganswers = {
+                    email:sessionStorage.getItem('email') == null ? generateSessionId() : sessionStorage.getItem('email'),
+                    question_number: selectedIndex,
+                    // Add other fields you need (e.g., given_name, family_name)
+                };
+
+                //console.log("sending data for wrong answer with profile"+wronganswers.email);
+
+                const url = "/api/Wronganswer/postwronganswer"; // Adjusted endpoint to remove query parameters
+                ////console.log("calling user registration"+wronganswers);
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify(wronganswers)); // Pass data as JSON in the request body
+
+                wrongCount++;
+            }
+
+
+
+
+            // Update counters
+            //selectedOptionValue === correctAnswer ? correctCount++ : wrongCount++;
+            document.getElementById("correctCounter").textContent = correctCount;
+            document.getElementById("wrongCounter").textContent = wrongCount;
+        }
+
+        // Fetch questions from the API
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //document.getElementById("indexCounter").textContent = "Question 1 of "+data.length;
+                data = JSON.parse(this.responseText);
+                loadQuestion(currentQuestionIndex); // Load the first question initially
+            }
+        };
+        console.log("wronganswers for "+sessionStorage.getItem("email"));
+        xhttp.open("GET", "/api/Wronganswer/getWronganswers?email="+sessionStorage.getItem("email"), true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+
+        // Add "Next" button and its functionality
+        var nextButton = document.createElement("button");
+        nextButton.textContent = "Next    ";
+        nextButton.setAttribute("class", "btn btn-primary"); // Set the variant attribute
+        nextButton.style.marginTop = "3%";
+
+
+        let indexCounter = document.getElementById("indexCounter");
+
+        nextButton.addEventListener("click", function () {
+            
+
+            if (currentQuestionIndex === (data.length-1))
+                {
+                    nextButton.disabled = true;
+                    return null;
+                }
+            indexCounter.textContent=((currentQuestionIndex+2)+" of "+data.length+" Questions");
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        });
+        document.getElementById("nextButton").appendChild(nextButton); // Add button to the page
+
+
+
+        // Add "Next" button and its functionality
+        var scoreButton = document.createElement("button");
+        scoreButton.textContent = "Next    ";
+        scoreButton.setAttribute("class", "btn btn-primary"); // Set the variant attribute
+
+
+
+        // document.body.appendChild(nextButton); // Add button to the page
+
+
+
+    });
+
+    function generateSessionId() {
+        let sessionId = sessionStorage.getItem('sessionId');
+
+        if (!sessionId) {
+            sessionId = crypto.randomUUID(); // Modern approach for secure IDs
+            sessionStorage.setItem('sessionId', sessionId);
+        }
+
+        return sessionId;
+    }
+
+
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "745450333592-sd40jf6r1uqflv5sgtse93bcnovdqm8q.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "large" }  // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+    }
+
+
+    async function handleCredentialResponse(response) {
+        //console.log("Encoded JWT ID token: " + response.credential);
+
+        document.getElementById("buttonDiv").style.visibility = 'hidden';
+        document.getElementById("signoutDiv").textContent = sessionStorage.getItem("email");
+        document.getElementById("signoutDiv").style.visibility = 'visible';
+        try {
+            // 1. Decode the JWT token 
+            const base64Url = response.credential.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            const decodedToken = JSON.parse(jsonPayload);
+
+
+            // 2. Extract relevant profile information
+            const profile = {
+                name: decodedToken.name,
+                email: decodedToken.email,
+                picture: decodedToken.picture,
+                // Add other fields you need (e.g., given_name, family_name)
+            };
+
+
+            const url = "/api/User/register"; // Adjusted endpoint to remove query parameters
+            //console.log("calling user registration"+profile.email);
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", url, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(JSON.stringify(profile)); // Pass data as JSON in the request body
+
+
+            const emailToSend = profile.email; // Assuming 'profile' is an object with an 'email' property
+
+
+
+
+            // 3. Print the profile (or use it in your application)
+            //console.log("User Profile:", profile);
+
+
+            sessionStorage.setItem('name', profile.name);
+            sessionStorage.setItem('email', profile.email);
+
+            //console.log(sessionStorage.getItem('name'));
+            //console.log(sessionStorage.getItem('email'));
+
+            // Optionally, display the profile in your UI (replace with your actual UI logic)
+            // document.getElementById('profile-name').textContent = profile.name;
+            // document.getElementById('profile-email').textContent = profile.email;
+            // document.getElementById('profile-picture').src = profile.picture;
+
+        } catch (error) {
+            //console.error("Error decoding ID token:", error);
+        }
+    }
+
+
+
+
 
 </script>
+
+<script>
+
+</script>
+
+<style>
+
+</style>
+
+</html>

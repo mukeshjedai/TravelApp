@@ -17,7 +17,6 @@ namespace TavelApp.Views.Home
             _questionData = questionData;
         }
 
-        public IEnumerable<QuestionData> Questions { get; private set; }
 
         public void OnGet()
         {
