@@ -25,37 +25,53 @@
 
 
 <div style="display: block">
+    <div id="welcome">Welcome,</div>
+
     <div style=" background-color: #164549; color: #000000; border-radius: 4px;display: block; width: fit-content">
         <span style="background-color: #164549;color: white">Correct: </span>
         <span id="correctCounter" style="background-color: #164549;color: white">0</span>
         &nbsp;&nbsp;&nbsp;
         <span style="background-color: #164549;color: white">Wrong: </span>
         <span id="wrongCounter" style="background-color: #164549;color: white">0</span>
-       
+
     </div>
     <div style=" background-color: #ffffff; color: #000000;  border-radius: 4px;display: block;">
-        <span id = "indexCounter">Question 1 of 496 questions</span>
+        <span id="indexCounter">Question 1 of 496 questions</span>
     </div>
 
     <div id="questionContainer" class="question-container" style="display: block;padding-top: 2%;">
-        <table id="example" class="display" >
+        <table id="example" class="display">
             <tbody>
 
             </tbody>
         </table>
-        
+
     </div>
     <div id="nextButton" style="display: block"></div>
-        <div id="ResultButton" style="display: block">
-            <a href="/Results">Result</a>
-        </div>
-    
+    <div id="ResultButton" style="display: none">
+        <a href="/Results">Result</a>
+    </div>
+
 
 </div>
 </body>
 
 
 <script>
+
+    $(document).ready(function() {
+        console.log("cookie found"+getCookie("australiancitizenshiptest"));
+        var useremail = getCookie("australiancitizenshiptest");
+
+        document.getElementById("welcome").textContent =  "Welcome, "+getCookie("australiancitizenshiptest");
+        if (useremail != undefined)
+        {
+            if (useremail.indexOf("gmail")){
+                document.getElementById("buttonDiv").hidden = false;
+            }
+        }
+    });
+    
     document.addEventListener("DOMContentLoaded", function () {
        
     var correctCount = 0;
@@ -231,6 +247,22 @@
 
         return sessionId;
     }
+
+    // Creating and Setting a Cookie
+    function setCookie(name, value, daysToExpire) {
+        const expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+        let expires = "expires="+ expirationDate.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/"; // Set path to '/' for site-wide access
+    }
+
+    // Reading a Cookie
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
     
 
     window.onload = function () {
@@ -271,6 +303,13 @@
                 // Add other fields you need (e.g., given_name, family_name)
             };
 
+            if (true) {
+                console.log("before setting cookie"+getCookie("australiancitizenshiptest"));
+                setCookie("australiancitizenshiptest", sessionStorage.getItem('email'));
+                console.log("after setting cookie"+getCookie("australiancitizenshiptest"));
+
+            }
+
 
             const url = "/api/User/register"; // Adjusted endpoint to remove query parameters
             //console.log("calling user registration"+profile.email);
@@ -304,6 +343,7 @@
             //console.error("Error decoding ID token:", error);
         }
     }
+
 
 
 
