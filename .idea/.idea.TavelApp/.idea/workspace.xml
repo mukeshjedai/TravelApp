@@ -10,14 +10,10 @@
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/ResultsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/ResultsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/TopicsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/TopicsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/WronganswerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/WronganswerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Models/QuestionData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Models/QuestionData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Startup.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Home/Index.cshtml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Results/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Results/Index.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,5 +150,37 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Working code with colors." />
     <option name="LAST_COMMIT_MESSAGE" value="Working code with colors." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/TavelApp/Controllers/AccountController.cs</url>
+          <line>21</line>
+          <properties documentPath="C:\Users\mukes\RiderProjects\TravelApp\TavelApp\Controllers\AccountController.cs" containingFunctionPresentation="Method 'SignInGoogle'">
+            <startOffsets>
+              <option value="589" />
+            </startOffsets>
+            <endOffsets>
+              <option value="735" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/TavelApp/Controllers/AccountController.cs</url>
+          <line>34</line>
+          <properties documentPath="C:\Users\mukes\RiderProjects\TravelApp\TavelApp\Controllers\AccountController.cs" containingFunctionPresentation="Method 'GoogleCallback'">
+            <startOffsets>
+              <option value="964" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1050" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

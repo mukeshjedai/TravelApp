@@ -8,19 +8,7 @@
 <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-<script>
-    AppleID.auth.init({
-        clientId: 'YOUR_SERVICES_ID_CLIENT_ID', // Replace with your Services ID Client ID
-        scope: 'name email', // Request name and email
-        redirectURI: 'YOUR_WEBSITE_REDIRECT_URI', // Replace with your website's redirect URI
-        state: 'YOUR_CUSTOM_STATE', // Optional: for tracking login state
-    });
 
-    document.getElementById('appleid-signin').addEventListener('click', () => {
-        AppleID.auth.signIn();
-    });
-
-</script>
 <div style="width: 100%;min-width: 100%; color: white; background-color: #164549; right: 0px;">
     <a href="/"><img width="100px;" src="logo.svg" /></a>
     Australian Citizenship Practice Test
@@ -36,7 +24,7 @@
 </div>
 
 <div id="buttonDiv" style="float:right; "></div>
-<a href="#" id ="signoutDiv" style="bottom: 0;float: right;right: 0; visibility: hidden;" onclick="">Sign out</a>
+<div id="welcome">Welcome,</div>
 <table id="example" class="display" style="width:100%;" >
     <thead>
     <tr>
@@ -136,9 +124,12 @@
                     }
 
                     function logRowIndex(data) {
+                    
+                    
+                    
 
                         let wronganswers = {
-                            email:sessionStorage.getItem('email') == null ? generateSessionId().toString() : sessionStorage.getItem('email'),
+                            email:getCookie("australiancitizenshiptest"),
                             question_number: (parseInt(data, 10) + 1).toString()
                         };
 
@@ -166,8 +157,41 @@
 </script>
 
 <script>
+
+    function generateSessionId() {
+        let sessionId = sessionStorage.getItem('sessionId');
+
+        if (!sessionId) {
+            sessionId = crypto.randomUUID(); // Modern approach for secure IDs
+            sessionStorage.setItem('sessionId', sessionId);
+        }
+
+        //console.log(sessionId);
+
+        return sessionId;
+    }
     
     $(document).ready(function() {
+        console.log("cookie found"+getCookie("australiancitizenshiptest"));
+        var useremail = getCookie("australiancitizenshiptest");
+        
+        document.getElementById("welcome").textContent =  "Welcome, "+getCookie("australiancitizenshiptest");
+        if (useremail != undefined)
+        {
+            if (useremail.indexOf("gmail")){
+                document.getElementById("buttonDiv").hidden = true;
+            }
+        }
+        
+
+        var generatedSessionIdString = generateSessionId().toString(); // Convert to string if needed
+        if(getCookie("australiancitizenshiptest") === undefined)
+        {
+            setCookie("australiancitizenshiptest",sessionStorage.getItem('email') === null ? generateSessionId().toString() : sessionStorage.getItem('email'));
+
+        }else{
+            //console.log(getCookie("australiancitizenshiptest"));
+        }
         
         let table  = new DataTable('#example',{
             "language": {
@@ -188,22 +212,12 @@
         });
     });
 
+
 </script>
 <script>
    
 
-    function generateSessionId() {
-        let sessionId = sessionStorage.getItem('sessionId');
-
-        if (!sessionId) {
-            sessionId = crypto.randomUUID(); // Modern approach for secure IDs
-            sessionStorage.setItem('sessionId', sessionId);
-        }
-        
-        console.log(sessionId);
-
-        return sessionId;
-    }
+ 
     window.onload = function () {
         google.accounts.id.initialize({
             client_id: "745450333592-sd40jf6r1uqflv5sgtse93bcnovdqm8q.apps.googleusercontent.com",
@@ -215,14 +229,32 @@
         );
         google.accounts.id.prompt(); // also display the One Tap dialog
     }
+    // Creating and Setting a Cookie
+    function setCookie(name, value, daysToExpire) {
+        const expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+        let expires = "expires="+ expirationDate.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/"; // Set path to '/' for site-wide access
+    }
+
+    // Reading a Cookie
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    
 
 
     async function handleCredentialResponse(response) {
+    
+        
         //console.log("Encoded JWT ID token: " + response.credential);
 
-        document.getElementById("buttonDiv").style.visibility = 'hidden';
-        document.getElementById("signoutDiv").textContent = sessionStorage.getItem("email");
-        document.getElementById("signoutDiv").style.visibility = 'visible';
+        //document.getElementById("buttonDiv").style.visibility = 'hidden';
+       // document.getElementById("signoutDiv").textContent = sessionStorage.getItem("email");
+        //document.getElementById("signoutDiv").style.visibility = 'visible';
         try {
             // 1. Decode the JWT token 
             const base64Url = response.credential.split('.')[1];
@@ -241,6 +273,16 @@
                 picture: decodedToken.picture,
                 // Add other fields you need (e.g., given_name, family_name)
             };
+
+            if (true) {
+                console.log("before setting cookie"+getCookie("australiancitizenshiptest"));
+                setCookie("australiancitizenshiptest", sessionStorage.getItem('email'));
+                console.log("after setting cookie"+getCookie("australiancitizenshiptest"));
+
+            }
+            
+            //console.log(getCookie("australiancitizenshiptest"));
+
 
 
             const url = "/api/User/register"; // Adjusted endpoint to remove query parameters

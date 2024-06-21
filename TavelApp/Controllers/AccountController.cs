@@ -8,6 +8,12 @@ namespace TavelApp.Controllers;
 
 public class AccountController : Controller
 {
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public AccountController(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = _httpContextAccessor;
+    }
     
     [AllowAnonymous]
     [HttpGet("signin-google")]
@@ -19,6 +25,8 @@ public class AccountController : Controller
         };
         return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
     }
+    
+    
 
     [AllowAnonymous]
     [HttpGet("google-callback")]
@@ -32,9 +40,10 @@ public class AccountController : Controller
             var email = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var name = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            // Use this info to either create or authenticate a user in your system
+            var session = _httpContextAccessor.HttpContext.Session;
+            session.SetString("name",name);
+            session.SetString("email",email);
 
-            // ... 
 
             return RedirectToAction("Index", "Home"); // Redirect to a protected page
         }

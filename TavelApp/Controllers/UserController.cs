@@ -3,22 +3,24 @@ using Npgsql;
 using System.Data;
 using TavelApp.Models;
 
-namespace YourNamespace.Controllers
+namespace TravelApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration; // For reading connection string
-
         public UserController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+        
 
         [HttpPost("register")] // Use a descriptive endpoint
         public IActionResult RegisterUser([FromBody] UserRegistration userData)
         {
+            
+          
             
             var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
 

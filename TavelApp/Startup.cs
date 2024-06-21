@@ -30,10 +30,18 @@ namespace TavelApp
             services.AddControllersWithViews();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
+            services.AddHttpContextAccessor(); 
+
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationFormats.Add("/Views/{1}/{0}.cshtml");
                 options.ViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
+            });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+                options.Cookie.HttpOnly = true; // Prevent client-side script access
+                options.Cookie.IsEssential = true; // Ensure session cookie persists even when other cookies are blocked
             });
             services.AddAuthentication(options =>
                 {
@@ -93,6 +101,8 @@ namespace TavelApp
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseSession();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
