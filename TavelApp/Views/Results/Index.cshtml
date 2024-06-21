@@ -12,3 +12,28 @@
    
     </tbody>
 </table>
+
+
+<script>
+    const xhr = new XMLHttpRequest();
+    const endpointUrl = '/Results/getwronganswers?email=mukeshbcc56@gmail.com';
+
+    xhr.open('GET', endpointUrl); // Use 'POST' for sending data
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const responseData = JSON.parse(xhr.responseText);
+            // Process the responseData (e.g., display in your UI)
+            console.log(responseData);
+        } else {
+            console.error('Error:', xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error('Request failed');
+    };
+
+    xhr.send(); // For 'POST', send the data here: xhr.send(yourData);
+
+</script>

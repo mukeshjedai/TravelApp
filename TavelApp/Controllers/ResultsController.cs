@@ -33,9 +33,11 @@ public class ResultsController : Controller
         using var connection = new NpgsqlConnection(connectionString);
         //connection.Open();
         await connection.OpenAsync();
+        
+        
 
         var wrongAnswers = await connection.QueryAsync<WrongAnswer>(
-            "SELECT * FROM user_wronganswers WHERE email = @Email",
+            "SELECT  Question, Option1, Option2, Option3, Option4, answer FROM public.Questions as que inner join user_wronganswers as wa on  wa.question_number = que.id where wa.email = @email",
             new { Email = email });
         connection.Close();
         return Ok(wrongAnswers);
