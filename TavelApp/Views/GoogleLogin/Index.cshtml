@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <script>
+    // Initialize Firebase
+    // Your Firebase configuration
+    const firebaseConfig = {
+      // ... your project config
+    };
+
+    firebase.initializeApp({
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      // ... other configuration
+    });
+
+    // Create Google provider object
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // Add event listener to your sign-in button
+    document.getElementById("sign-in-button").addEventListener("click", () => {
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          // Handle successful sign-in (get user data, etc.)
+          const user = result.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          // Handle sign-in errors
+          console.error(error);
+        });
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>

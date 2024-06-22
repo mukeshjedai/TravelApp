@@ -375,6 +375,10 @@
             // document.getElementById('profile-name').textContent = profile.name;
             // document.getElementById('profile-email').textContent = profile.email;
             // document.getElementById('profile-picture').src = profile.picture;
+            setCookie("australiancitizenshiptest",profile.email);
+            document.getElementById("welcome").textContent = "Welcome "+((getCookie("australiancitizenshiptest") === 'null' || getCookie("australiancitizenshiptest") === undefined) ? "" : getCookie("australiancitizenshiptest"));
+
+            window.location.reload(true);
 
         } catch (error) {
             //console.error("Error decoding ID token:", error);
