@@ -21,7 +21,7 @@ namespace TavelApp.Controllers
             }
             else
             {
-                return View(); // Default view for non-mobile devices
+                return RedirectToAction("Index", "Mobileapp"); // Default view for non-mobile devices
             }
         }
     }

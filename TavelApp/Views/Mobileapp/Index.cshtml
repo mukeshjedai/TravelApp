@@ -63,7 +63,7 @@
         console.log("cookie found"+getCookie("australiancitizenshiptest"));
         var useremail = getCookie("australiancitizenshiptest");
 
-        document.getElementById("welcome").textContent =  "Welcome, "+getCookie("australiancitizenshiptest");
+        document.getElementById("welcome").textContent =  "Welcome, "+(getCookie("australiancitizenshiptest") === 'null' ? "" : getCookie("australiancitizenshiptest"));
         if (useremail != undefined)
         {
             if (useremail.indexOf("gmail")){
@@ -270,7 +270,20 @@
             client_id: "745450333592-sd40jf6r1uqflv5sgtse93bcnovdqm8q.apps.googleusercontent.com",
             callback: handleCredentialResponse
         });
+        
+        if (getCookie("australiancitizenshiptest").indexOf("gmail")){
+            // Get a reference to the div you want to remove
+             document.getElementById("buttonDiv").hidden = true;
+
+// Get the parent element of the div
+          //  const parentElement = divToRemove.parentNode;
+
+// Remove the div from its parent
+            
+
+        }
         google.accounts.id.renderButton(
+            
             document.getElementById("buttonDiv"),
             { theme: "outline", size: "large" }  // customization attributes
         );
@@ -282,8 +295,8 @@
         //console.log("Encoded JWT ID token: " + response.credential);
         
         document.getElementById("buttonDiv").style.visibility = 'hidden';
-        document.getElementById("signoutDiv").textContent = sessionStorage.getItem("email");
-        document.getElementById("signoutDiv").style.visibility = 'visible';
+        document.getElementById("welcome").textContent = "Welcome, "+(getCookie("australiancitizenshiptest") === 'null' ? "" : getCookie("australiancitizenshiptest"));
+        //document.getElementById("welcome").style.visibility = 'visible';
         try {
             // 1. Decode the JWT token 
             const base64Url = response.credential.split('.')[1];
@@ -307,6 +320,8 @@
                 console.log("before setting cookie"+getCookie("australiancitizenshiptest"));
                 setCookie("australiancitizenshiptest", sessionStorage.getItem('email'));
                 console.log("after setting cookie"+getCookie("australiancitizenshiptest"));
+                document.getElementById("welcome").textContent =  "Welcome, "+ getCookie("australiancitizenshiptest");
+
 
             }
 
