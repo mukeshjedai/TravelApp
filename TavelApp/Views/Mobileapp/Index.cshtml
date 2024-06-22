@@ -63,7 +63,7 @@
         console.log("cookie found"+getCookie("australiancitizenshiptest"));
         var useremail = getCookie("australiancitizenshiptest");
 
-        document.getElementById("welcome").textContent =  "Welcome, "+(getCookie("australiancitizenshiptest") === 'null' ? "" : getCookie("australiancitizenshiptest"));
+        document.getElementById("welcome").textContent = "Welcome "+((getCookie("australiancitizenshiptest") === 'null' || getCookie("australiancitizenshiptest") === undefined) ? "" : getCookie("australiancitizenshiptest"));
         if (useremail != undefined)
         {
             if (useremail.indexOf("gmail")){
@@ -168,23 +168,14 @@
                 
                 correctCount ++;
             }else{
-                const wronganswers = {
-                    email:sessionStorage.getItem('email') == null ? generateSessionId() : sessionStorage.getItem('email'),
-                    question_number: selectedIndex,
-                    // Add other fields you need (e.g., given_name, family_name)
-                };
                 
-                //console.log("sending data for wrong answer with profile"+wronganswers.email);
-
-                const url = "/api/Wronganswer/postwronganswer"; // Adjusted endpoint to remove query parameters
-                ////console.log("calling user registration"+wronganswers);
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", url, true);
-                xhttp.setRequestHeader("Content-type", "application/json");
-                xhttp.send(JSON.stringify(wronganswers)); // Pass data as JSON in the request body
-
                 wrongCount++;
+
+                logRowIndex();
             }
+
+          
+
 
 
 
@@ -223,7 +214,24 @@
         document.getElementById("nextButton").appendChild(nextButton); // Add button to the page
 
 
+        async function logRowIndex() {
 
+            let wronganswers = {
+                email:getCookie("australiancitizenshiptest"),
+                question_number: (currentQuestionIndex+1).toString()
+            };
+
+            console.log(wronganswers);
+
+            if (1){
+                const url = "/api/Wronganswer/postwronganswer"; // Adjusted endpoint to remove query parameters
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", url, false);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify(wronganswers)); // Pass data as JSON in the request body
+            }
+
+        }
         // Add "Next" button and its functionality
         var scoreButton = document.createElement("button");
         scoreButton.textContent = "Next    ";
@@ -271,17 +279,18 @@
             callback: handleCredentialResponse
         });
         
-        if (getCookie("australiancitizenshiptest").indexOf("gmail")){
-            // Get a reference to the div you want to remove
-             document.getElementById("buttonDiv").hidden = true;
+        if (getCookie("australiancitizenshiptest") != 'null' && getCookie("australiancitizenshiptest") != undefined) 
+        {
+            if (getCookie("australiancitizenshiptest").indexOf("gmail")){
+                // Get a reference to the div you want to remove
+                document.getElementById("buttonDiv").hidden = true;
+                
 
-// Get the parent element of the div
-          //  const parentElement = divToRemove.parentNode;
 
-// Remove the div from its parent
-            
-
+            }
         }
+        
+        
         google.accounts.id.renderButton(
             
             document.getElementById("buttonDiv"),
@@ -295,7 +304,7 @@
         //console.log("Encoded JWT ID token: " + response.credential);
         
         document.getElementById("buttonDiv").style.visibility = 'hidden';
-        document.getElementById("welcome").textContent = "Welcome, "+(getCookie("australiancitizenshiptest") === 'null' ? "" : getCookie("australiancitizenshiptest"));
+        document.getElementById("welcome").textContent = "Welcome "+((getCookie("australiancitizenshiptest") === 'null' || getCookie("australiancitizenshiptest") === undefined) ? "" : getCookie("australiancitizenshiptest"));
         //document.getElementById("welcome").style.visibility = 'visible';
         try {
             // 1. Decode the JWT token 
