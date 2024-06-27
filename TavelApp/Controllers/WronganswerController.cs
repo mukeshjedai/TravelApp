@@ -68,11 +68,13 @@ public class WronganswerController : Controller
         using var connection = new NpgsqlConnection(connectionString);
         //connection.Open();
         await connection.OpenAsync();
-        
-        
+
+        var query =
+            "SELECT Que.id, email, question_number,Que.\"Question\", answer_datetime FROM public.user_wronganswers as wa " +
+            "inner join public.\"Questions\" as Que on wa.question_number = Que.id where wa.email = @email";
 
         var wrongAnswers = await connection.QueryAsync<WrongAnswer>(
-            "SELECT id, email, question_number, answer_datetime\n\tFROM public.user_wronganswers as wa where wa.email = @email",
+            query,
             new { Email = email });
         connection.Close();
         return Ok(wrongAnswers);
