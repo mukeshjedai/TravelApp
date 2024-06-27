@@ -9,12 +9,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="747cc07f-bfc0-43c5-b0a7-094b80667e37" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TavelApp/Controllers/GoogleLogin.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TavelApp/Views/GoogleLogin/Index.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TavelApp/Views/GoogleLogin/Index.cshtml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TavelApp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Views/Mobileapp/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TavelApp/Controllers/WronganswerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TavelApp/Controllers/WronganswerController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,9 +62,9 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "/Users/mukeshcse/Library/Application Support/JetBrains/Rider2024.1/resharper-host/DecompilerCache",
-      "/Users/mukeshcse/Library/Application Support/JetBrains/Rider2024.1/resharper-host/SourcesCache",
-      "/Users/mukeshcse/Library/Application Support/Symbols/src"
+      "C:\\Users\\mukes\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\mukes\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\mukes\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
@@ -119,6 +115,8 @@
       <workItem from="1718364342703" duration="16590000" />
       <workItem from="1718629897505" duration="1209000" />
       <workItem from="1718807899464" duration="1675000" />
+      <workItem from="1719455436581" duration="12000" />
+      <workItem from="1719455466491" duration="1549000" />
     </task>
     <task id="LOCAL-00001" summary="Working code with colors.">
       <option name="closed" value="true" />
