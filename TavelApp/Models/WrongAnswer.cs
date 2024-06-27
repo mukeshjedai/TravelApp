@@ -4,6 +4,16 @@ using System.Text.Json.Serialization;
 
 public class WrongAnswer
 {
+    
+    private static int _nextId = 1;
+
+    [JsonPropertyName("AutoId")]
+    public int AutoId { get; private set; }
+
+    public WrongAnswer()
+    {
+        AutoId = System.Threading.Interlocked.Increment(ref _nextId);
+    }
     [JsonPropertyName("id")]
     public int id { get; set; }
 
