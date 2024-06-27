@@ -70,7 +70,7 @@ public class WronganswerController : Controller
         await connection.OpenAsync();
 
         var query =
-            "SELECT Que.id, email, question_number,Que.\"Question\", answer_datetime FROM public.user_wronganswers as wa " +
+            "SELECT Que.id, email, question_number,Que.\"Question\",\"Option1\", \"Option2\", \"Option3\", \"Option4\", answer, answer_datetime FROM public.user_wronganswers as wa " +
             "inner join public.\"Questions\" as Que on wa.question_number = Que.id where wa.email = @email";
 
         var wrongAnswers = await connection.QueryAsync<WrongAnswer>(
