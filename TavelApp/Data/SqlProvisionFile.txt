@@ -1,0 +1,65 @@
+-- Use your database (Replace 'YourDatabaseName' with actual database name)
+USE TravelAppdb;
+GO
+
+-- Enable Transactions for Safe Execution
+BEGIN TRANSACTION;
+
+-- Drop tables if they already exist (To prevent conflicts when re-running the script)
+IF OBJECT_ID('dbo.user_wronganswers', 'U') IS NOT NULL
+    DROP TABLE dbo.user_wronganswers;
+IF OBJECT_ID('dbo.Questions', 'U') IS NOT NULL
+    DROP TABLE dbo.Questions;
+GO
+
+-- Create Questions Table
+CREATE TABLE dbo.Questions (
+    id INT IDENTITY(1,1) PRIMARY KEY,  -- Auto-increment ID
+    Question NVARCHAR(MAX) NOT NULL,   -- Question Text
+    Option1 NVARCHAR(255) NOT NULL,    -- First Answer Option
+    Option2 NVARCHAR(255) NOT NULL,    -- Second Answer Option
+    Option3 NVARCHAR(255) NOT NULL,    -- Third Answer Option
+    Option4 NVARCHAR(255) NOT NULL,    -- Fourth Answer Option
+    answer NVARCHAR(255) NOT NULL      -- Correct Answer
+);
+GO
+
+-- Create user_wronganswers Table
+CREATE TABLE dbo.user_wronganswers (
+    id INT IDENTITY(1,1) PRIMARY KEY,   -- Auto-increment ID
+    email NVARCHAR(255) NOT NULL,       -- User Email
+    question_number INT NOT NULL,       -- ID of the Question
+    answer_datetime DATETIME DEFAULT GETDATE(),  -- Timestamp of Submission
+    
+    -- Foreign Key Constraint to Ensure question_number Exists in Questions Table
+    CONSTRAINT FK_user_wronganswers_Questions FOREIGN KEY (question_number)
+    REFERENCES dbo.Questions(id) ON DELETE CASCADE
+);
+GO
+
+-- Create Indexes for Faster Searches
+CREATE INDEX idx_user_wronganswers_email_question ON dbo.user_wronganswers(email, question_number);
+CREATE INDEX idx_questions_id ON dbo.Questions(id);
+GO
+
+-- Insert Sample Data into Questions Table
+INSERT INTO dbo.Questions (Question, Option1, Option2, Option3, Option4, answer)
+VALUES 
+    ('What is the capital of France?', 'Berlin', 'Madrid', 'Paris', 'Rome', 'Paris'),
+    ('What is 2 + 2?', '3', '4', '5', '6', '4'),
+    ('Which planet is known as the Red Planet?', 'Earth', 'Mars', 'Jupiter', 'Venus', 'Mars');
+GO
+
+-- Insert Sample Data into user_wronganswers Table
+INSERT INTO dbo.user_wronganswers (email, question_number)
+VALUES ('test@example.com', 1),
+       ('student@domain.com', 2);
+GO
+
+-- Commit Transaction (Ensures Everything Runs Safely)
+COMMIT TRANSACTION;
+GO
+
+-- Verify Data
+SELECT * FROM dbo.Questions;
+SELECT * FROM dbo.user_wronganswers;

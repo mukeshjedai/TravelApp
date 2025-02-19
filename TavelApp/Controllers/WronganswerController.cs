@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Npgsql;
 using TavelApp.Models;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using Dapper;
+using Microsoft.Data.SqlClient;
 
 namespace TavelApp.Controllers;
 
@@ -24,9 +24,9 @@ public class WronganswerController : Controller
 
     public bool CheckIfAnswerExistsAsync(string email, int question_number) // Add the question_number parameter
     {
-        var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
+        var connectionString = _configuration.GetConnectionString("LocalDBConnection");
 
-        using var connection = new NpgsqlConnection(connectionString);
+        using var connection = new SqlConnection(connectionString);
          connection.Open();
 
         int wrongAnswers =  connection.QuerySingle<int>(
@@ -40,10 +40,10 @@ public class WronganswerController : Controller
     public async Task<ActionResult<IEnumerable<WrongAnswer>>> Get(string email)
     {
         
-        var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
+        var connectionString = _configuration.GetConnectionString("LocalDBConnection");
 
         // 2. Npgsql Connection Object
-        using var connection = new NpgsqlConnection(connectionString);
+        using var connection = new SqlConnection(connectionString);
         //connection.Open();
         await connection.OpenAsync();
         
@@ -62,10 +62,10 @@ public class WronganswerController : Controller
     public async Task<ActionResult<IEnumerable<WrongAnswer>>> GetWronganswersSummary(string email)
     {
         
-        var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
+        var connectionString = _configuration.GetConnectionString("LocalDBConnection");
 
         // 2. Npgsql Connection Object
-        using var connection = new NpgsqlConnection(connectionString);
+        using var connection = new SqlConnection(connectionString);
         //connection.Open();
         await connection.OpenAsync();
 
@@ -83,31 +83,45 @@ public class WronganswerController : Controller
     }
 
 
-
-    // GET
     [HttpPost("postwronganswer")] // Use a descriptive endpoint
     public IActionResult Index([FromBody] WrongAnswer wrongAnswer)
     {
-        
-        var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
+        WrongAnswer wrongAnswer1 = new WrongAnswer
+        {
+            id = 1,
+            email = "user@example.com",
+            Question = "What is the capital of France?",
+            Option1 = "Berlin",
+            Option2 = "Madrid",
+            Option3 = "Paris",
+            Option4 = "Rome",
+            answer = 3, // Assuming the correct answer is option 3 (Paris)
+            AnswerDatetime = DateTime.Now,
+            question_number = "1"
+        };
 
-        // 2. Npgsql Connection Object
-        using var connection = new NpgsqlConnection(connectionString);
+        wrongAnswer = wrongAnswer1;
+        // Use LocalDB connection string
+        var connectionString = _configuration.GetConnectionString("LocalDBConnection");
+
+        // SQL Server Connection Object
+        using var connection = new SqlConnection(connectionString);
         connection.Open();
 
         if (wrongAnswer.email == null)
         {
-            return BadRequest("please signin to save score");
+            return BadRequest("Please sign in to save score");
         }
 
-      if ( CheckIfAnswerExistsAsync(wrongAnswer.email,(int.Parse(wrongAnswer.question_number))))
-      { return Ok("Already Saved.");} 
+        if (CheckIfAnswerExistsAsync(wrongAnswer.email, int.Parse(wrongAnswer.question_number)))
+        {
+            return Ok("Already Saved.");
+        }
 
-
-        // 3. SQL Command Preparation
-        var command = new NpgsqlCommand("INSERT INTO user_wronganswers (email, question_number) VALUES (@email, @question_number)", connection);
+        // SQL Command Preparation
+        var command = new SqlCommand("INSERT INTO user_wronganswers (email, question_number) VALUES (@email, @question_number)", connection);
         command.Parameters.AddWithValue("@email", wrongAnswer.email);
-        command.Parameters.AddWithValue("@question_number", Int32.Parse(wrongAnswer.question_number));
+        command.Parameters.AddWithValue("@question_number", int.Parse(wrongAnswer.question_number));
 
         var rowsAffected = command.ExecuteNonQuery();
 
@@ -115,7 +129,7 @@ public class WronganswerController : Controller
         {
             return Ok("Wrong answer recorded");
         }
-        
-        return BadRequest("Error Recording wrong answer"); 
+
+        return BadRequest("Error recording wrong answer");
     }
 }

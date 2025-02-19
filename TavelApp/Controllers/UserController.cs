@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Npgsql;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Data;
 using TavelApp.Models;
 
@@ -9,102 +10,102 @@ namespace TravelApp.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IConfiguration _configuration; // For reading connection string
+        private readonly IConfiguration _configuration;
+
         public UserController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        
 
-        [HttpPost("register")] // Use a descriptive endpoint
+        [HttpPost("register")]
         public IActionResult RegisterUser([FromBody] UserRegistration userData)
         {
-            
-          
-            
-            var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
-
-            // 2. Npgsql Connection Object
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Open();
-
-            // 3. SQL Command Preparation
-            var userexists = new NpgsqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", connection);
-            userexists.Parameters.AddWithValue("@email", userData.email);
-            int existingUserCount = (int)(long)userexists.ExecuteScalar();
-
-            if (existingUserCount > 0)
+            if (userData == null || string.IsNullOrEmpty(userData.email) || string.IsNullOrEmpty(userData.name))
             {
-                return Ok("User Exists");
+                return BadRequest("Invalid user data.");
             }
-            
-            
 
-            // 3. SQL Command Preparation
-            var command = new NpgsqlCommand("INSERT INTO users (name, email, picture) VALUES (@username, @email, @passwordHash)", connection);
-            command.Parameters.AddWithValue("@username", userData.name);
-            command.Parameters.AddWithValue("@email", userData.email);
-            command.Parameters.AddWithValue("@passwordHash", userData.picture); // Assume you're hashing passwords
+            var connectionString = _configuration.GetConnectionString("LocalDBConnection");
 
-            // 4. Data Insertion and Error Handling
-            try
+            using (var connection = new SqlConnection(connectionString))
             {
-                var rowsAffected = command.ExecuteNonQuery();
-                if (rowsAffected > 0)
+                try
                 {
-                    return Ok("User registered successfully");
+                    connection.Open();
+
+                    // Check if the user already exists
+                    using (var userExistsCmd = new SqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", connection))
+                    {
+                        userExistsCmd.Parameters.AddWithValue("@email", userData.email);
+                        int existingUserCount = Convert.ToInt32(userExistsCmd.ExecuteScalar());
+
+                        if (existingUserCount > 0)
+                        {
+                            return Ok("User Exists");
+                        }
+                    }
+
+                    // Insert new user
+                    using (var command = new SqlCommand("INSERT INTO users (name, email, picture) VALUES (@username, @email, @picture)", connection))
+                    {
+                        command.Parameters.AddWithValue("@username", userData.name);
+                        command.Parameters.AddWithValue("@email", userData.email);
+                        command.Parameters.AddWithValue("@picture", userData.picture);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return rowsAffected > 0 ? Ok("User registered successfully") : BadRequest("User registration failed");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return BadRequest("User registration failed"); 
+                    // Log the exception (use proper logging mechanism)
+                    return StatusCode(500, $"An error occurred: {ex.Message}");
                 }
-                
-                connection.Close();
-            }
-            catch (Exception ex)
-            {
-                connection.Close();
-                // Log the exception (using a logger)
-                return StatusCode(500, "An error occurred during registration");
             }
         }
 
         [HttpGet("{email}")]
-        public IActionResult GetUser([FromQuery] string email)
+        public IActionResult GetUser(string email)
         {
-
-            try
+            if (string.IsNullOrEmpty(email))
             {
-                var connectionString = _configuration.GetConnectionString("AzurePostgresConnection");
-
-                // 2. Npgsql Connection Object
-                using var connection = new NpgsqlConnection(connectionString);
-                connection.Open();
-
-                // 3. SQL Command Preparation
-                var userexists = new NpgsqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", connection);
-                userexists.Parameters.AddWithValue("@email", email);
-                int existingUserCount = (int)(long)userexists.ExecuteScalar();
-
-                if (existingUserCount >0)
-                {
-                    var command =
-                        new NpgsqlCommand(
-                            "INSERT INTO login_history (email, activity_timestamp) VALUES (@email, @activity_timestamp)", connection);
-                    command.Parameters.AddWithValue("@email", email);
-                    command.Parameters.AddWithValue("@activity_timestamp",System.DateTime.Now);
-                    var rowsAffected = command.ExecuteNonQuery();
-                }
-                connection.Close();
-
-                return Ok("Login registered successfully");
-            } catch (Exception ex)
-            {
-                
-                // Log the exception (using a logger)
-                return StatusCode(500, "An error occurred during registration");
+                return BadRequest("Email is required.");
             }
 
+            var connectionString = _configuration.GetConnectionString("LocalDBConnection");
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // Check if the user exists
+                    using (var userExistsCmd = new SqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", connection))
+                    {
+                        userExistsCmd.Parameters.AddWithValue("@email", email);
+                        int existingUserCount = Convert.ToInt32(userExistsCmd.ExecuteScalar());
+
+                        if (existingUserCount > 0)
+                        {
+                            // Insert login activity
+                            using (var command = new SqlCommand("INSERT INTO login_history (email, activity_timestamp) VALUES (@email, @activity_timestamp)", connection))
+                            {
+                                command.Parameters.AddWithValue("@email", email);
+                                command.Parameters.AddWithValue("@activity_timestamp", DateTime.Now);
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
+                    return Ok("Login registered successfully");
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (use proper logging mechanism)
+                    return StatusCode(500, $"An error occurred: {ex.Message}");
+                }
+            }
         }
     }
 }
