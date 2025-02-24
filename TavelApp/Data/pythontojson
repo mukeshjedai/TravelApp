@@ -1,0 +1,39 @@
+import psycopg2
+
+# Database connection parameters
+dbname = 'defaultdb'
+user = 'avnadmin'
+password = 'AVNS_BKQddwFKbOE_3CQpyf4'
+host = 'travelapp-mukeshbcc56-f406.g.aivencloud.com'
+port = 23377
+
+# Connect to the PostgreSQL server
+try:
+    connection = psycopg2.connect(
+        dbname=dbname,
+        user=user,
+        password=password,
+        host=host,
+        port=port,
+        sslmode='require'
+    )
+
+    # Create a cursor object
+    cursor = connection.cursor()
+
+    # Reset the sequence for the 'id' column to start from 1
+    cursor.execute("SELECT setval('questions_id_seq', 1, false);")
+
+    # Commit the transaction
+    connection.commit()
+
+    print("Sequence reset successfully!")
+
+except Exception as error:
+    print(f"Error: {error}")
+finally:
+    # Close the cursor and connection
+    if cursor:
+        cursor.close()
+    if connection:
+        connection.close()
